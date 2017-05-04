@@ -1,0 +1,300 @@
+﻿body {
+    font-family: Calibri, Arial, Tahoma;
+    font-size: 11pt;
+    color: #000000;
+    margin: 0px;
+    background-image:url(/images/UI/background.png);
+}
+.fullsizeDiv {
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    position: fixed;
+    align-content: center;
+    vertical-align: central;
+    align-items: center;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    border-spacing: 0px;
+}
+.pageTitle {
+    font-size: 24px;
+    white-space:nowrap;
+}
+.titleBackground {
+    background-color: #475254;
+    color: #FFFFFF;
+    padding-left: 10px;
+}
+.centerDiv {
+    background-color: red;
+    align-self: center;
+}
+.tableTitle {
+    background-color: #475254;
+    font-size: 14pt;
+    font-weight: bold;
+    color: #fff;
+}
+.loginBox {
+    border-spacing: 1px;
+    background-color: #ffffff;
+    width: 400px;
+}
+.loginBox .title {
+    border-spacing: 1px;
+    background-color: #ffffff;
+    width: 400px;
+}
+.loginBox .captionCell {
+    background-color: #475254;
+    color: #ffffff;
+    width: 100px;
+}
+.loginBox .inputCell {
+    background-color: #fff;
+    color: #000000;
+    height: 30px;
+}
+.loginBox input[type=text], input[type=password], textarea, 
+    #dvFormContainer input[type=text], 
+    #dvFormContainer input[type=password], 
+    #dvFormContainer textarea, 
+    #dvFormContainer Select  {
+  -webkit-transition: all 0.30s ease-in-out;
+  -moz-transition: all 0.30s ease-in-out;
+  -ms-transition: all 0.30s ease-in-out;
+  -o-transition: all 0.30s ease-in-out;
+  outline: none;
+  padding: 3px 0px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border: 1px solid #DDDDDD;
+  width: 94%;
+}
+
+.loginBox input[type=text]:focus, input[type=password]:focus, textarea:focus, textarea, 
+    #dvFormContainer input[type=text]:focus, 
+    #dvFormContainer input[type=password]:focus, 
+    #dvFormContainer textarea:focus,
+    #dvFormContainer select:focus {
+  box-shadow: 0 0 5px rgba(35, 107, 255, 1);
+  padding: 3px 0px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border: 1px solid rgba(35, 107, 255, 1);
+  width: 95%;
+}
+.loginBox input[type=submit], #dvFormContainer input[type=submit]  {
+  -webkit-transition: all 0.20s ease-in-out;
+  -moz-transition: all 0.20s ease-in-out;
+  -ms-transition: all 0.20s ease-in-out;
+  -o-transition: all 0.32s ease-in-out;
+  outline: none;
+  width: 90px;
+  height: 22px;
+}
+.loginBox input[type=submit]:focus, #dvFormContainer input[type=submit]:focus {
+  box-shadow: 0 0 5px rgba(35, 107, 255, 1);
+  border: 1px solid rgba(35, 107, 255, 1);
+  width: 90px;
+  height: 22px;
+}
+.error-text {
+    color: red;
+}
+.inputCellEmpty {
+    background-color: #fff;
+}
+.field-validation-error {
+    color: #b94a48;
+}
+.adminToolbar {
+    border-spacing: 0px;
+    padding: 0px;
+    width: 100%;
+    min-width: 592px;
+}
+#toolbarContainer {
+    padding-left: 30px;
+    padding-top: 0px;
+    padding-right: 30px;
+    /*padding-bottom: 5px;*/
+}
+.adminToolbar .leftCell {
+    background-image: url(/images/UI/toolbar-left.png);
+    background-repeat: no-repeat;
+    background-position: right;
+    width: 4px;
+    font-size:1px;
+    height: 53px;
+}
+.adminToolbar .middleCell {
+    background-image: url(/images/UI/toolbar-bg.png);
+    background-repeat: repeat-x;
+    height: 53px;
+}
+.adminToolbar .rightCell {
+    background-image: url(/images/UI/toolbar-right.png);
+    background-repeat: no-repeat;
+    width: 4px;
+    font-size:2px;
+    height: 53px;
+    background-position: left;
+}
+.toolbarItems {
+    border-spacing: 0px;
+}
+.toolbarItems .topMenuItem {
+    color:#dcdfe1;
+    padding-left: 10px;
+    padding-right: 10px;
+    vertical-align: central;
+    padding-bottom: 10px;
+    font-weight: bold;
+    cursor:pointer;
+}
+.toolbarItems .topMenuItem:hover, .topMenuItemHover {
+    color:#fff;
+    padding-left: 10px;
+    padding-right: 10px;
+    vertical-align: central;
+    padding-bottom: 10px;
+    font-weight: bold;
+    background-image: url(/images/UI/toolbar-dropdown-bg.png);
+    cursor:pointer;
+}
+.toolbarItems .divider {
+    padding: 0px;
+    height: 53px;
+    background-image: url(/images/UI/toolbar-divider.png);
+    width: 1px;
+} 
+.toolbody {
+    border-spacing: 0px;
+    width: 400px;
+    padding: 0px;
+    margin-top: -3px;
+    margin-left: 7px;
+    margin-right: 14px;
+    display: none;
+    position: absolute;
+    margin: -3px;
+}
+.toolisland{
+   display: block;
+    position: absolute;
+}
+.toolislandLinks {
+    border-spacing: 0px;
+    padding: 0px;
+}
+.toolislandLinks .toolRow {
+    background-image: url(/images/UI/toolbar-dropdown-bg.png);
+}
+.toolislandLinks .toolRow  td {
+    background-image: url(/images/UI/toolbar-dropdown-bg.png);
+    color: #fff;
+    padding-left: 5px;
+    cursor: pointer;
+}
+.toolislandLinks .toolRow  td:hover {
+    background-image: url(/images/UI/toolbar-selected-bg.png);
+    color: #fff;
+    padding-left: 5px;
+    cursor: pointer;
+}
+.toolislandbottom {
+    border-spacing: 0px;
+    padding: 0px;
+    width: 100%;
+    font-size: 1px;
+    min-width: 200px;
+    height: 7px;
+}
+.toolislandbottom .leftCell  {
+    background-image: url(/images/UI/toolbar-dropdown-left-bot.png);
+    background-repeat: no-repeat;
+    background-position: right;
+    width: 3px;
+    height: 7px;
+    padding: 0px;
+}
+.toolislandbottom .middleCell  {
+    background-image: url(/images/UI/toolbar-dropdown-bot.png);
+    background-repeat: repeat-x;
+    background-position: right;
+    height: 7px;
+    padding: 0px;
+}
+.toolislandbottom .rightCell  {
+    background-image: url(/images/UI/toolbar-dropdown-right-bot.png);
+    background-repeat: no-repeat;
+    width: 3px;
+    height: 7px;
+    background-position: left;
+    padding: 0px;
+}
+
+.adminBody {
+    background-color: #fff;
+    /*-moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -khtml-border-radius: 20px;
+    border-radius: 20px;
+    */
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    bottom: 10px;
+    position:fixed;
+    top: 80px;
+    right: 36px;
+    left: 36px;
+    z-index: -1;
+    overflow: auto;
+    min-width: 560px;
+    min-height: 250px;
+}
+#parentMenuContainer {
+    padding: 0px;
+}
+.listing {
+    border-spacing: 0px;
+    width: 100%;
+}
+.listing .even {
+    background-color: #fff;
+    cursor:pointer;
+}
+.listing .odd {
+    background-color: #eee;
+    cursor:pointer;
+}
+.listing tr:hover {
+    background-color: rgba(35, 107, 255, 1);
+    color: #fff;
+}
+.listing .selected {
+    background-color: #5987bf;
+    color: #fff;
+}
+.listing tr td {
+    padding: 3px;
+}
+#dvListing {
+    float: left;
+    width: 300px;
+    min-height: 300px;
+    border: 1px solid #5987bf;
+    margin-right: 10px;
+    padding: 3px;
+}
+#dvFormContainer {
+    margin-top: 0px;
+    border: 1px solid #5987bf;
+    display: inline-block;
+    min-width: 200px;
+    padding: 3px;
+}

@@ -1,0 +1,106 @@
+﻿@model  SmsMis.Models.Console.Handlers.Admin.Branch
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Manage Branch Session";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/BranchSessionModule.js"></script>
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+<br />
+<form ng-app="adminModule1" ng-controller="branchsessionController"
+      name="myForm" novalidate>
+    <div id="dvFormContainer" class="DetailPage">
+        <table style="width: 600px">
+            <tr>
+                <td colspan="4" class="TableHeader">Manage Branch Session</td>
+            </tr>
+            <tr>
+                <td style="width: 150px" class="FormCaptionLeft">Company<span class="required">*</span></td>
+                <td colspan="3" class="FormTableContainer">
+                    <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="objCom.CompanyCode as objCom.CompanyName for objCom in listCompany" dosbox="true" ng-change="loadSessions()" class="ComboBoxesFlexible">
+                        <option value=""></option>
+
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Branch<span class="required">*</span></td>
+                <td colspan="3" class="FormTableContainer">
+                    <select id="branchCode" ng-model="selectedObject.BranchCode" ng-options="obj.BranchCode as obj.BranchName for obj in listBranch | filter:{CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" dosbox="true" ng-disabled="!selectedObject.CompanyCode" ng-change="loadSessions()">
+                        @*<option value=""></option>*@
+                    </select>
+                </td>
+            </tr>
+            @*<tr>
+                <td colspan="4">
+                    <div style="float: right; padding-right:15px;">
+                        <input type="button" name="Add Session" value="Add Session" ng-click="addSession()" ng-show="selectedObject.CompanyCode > 0 && selectedObject.BranchCode > 0" />
+                    </div>
+                </td>
+            </tr>*@
+            <tr>
+                <td colspan="4">
+                    <table class="tbl" style="border: solid 1px #808080; width: 98%" cellspacing="1" cellpadding="1">
+                        <thead class="TableSubHeader">
+                        <th style="width: 20%; text-align: left;">Sr #</th>
+                        <th style="width: 70%; text-align: left;">Session</th>
+                        <th style="width: 10%; text-align: center;">Edit</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="session in BranchSessionList">
+                                <td style="text-align: left;" class="FormTableContainer">
+                                    {{ $index +1}}
+                                </td>
+                                <td style="text-align: left;" class="FormTableContainer">
+                                    <select id="SesionCode" ng-model="session.SessionCode" ng-options="oSession.SessionCode as oSession.SessionName for oSession in listCompanySession | filter: {CompanyCode: selectedObject.CompanyCode}" ng-change="Session_Change(session.SessionCode)" class="ComboBoxesFlexible">
+                                        <option value=""></option>
+                                    </select>
+                                </td>
+                                <td style="text-align: center;" class="FormTableContainer">
+                                    <img src="~/images/delete_entry.gif" ng-click="deleteBranchSession(session)">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" class="TableHeader">
+                    <div style="float: right">
+                        <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                               class="Buttons" dosbox="true" ng-disabled="isValid()" />
+                        <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-disabled="isValid()"
+                               class="Buttons" dosbox="true" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div ng-show="saveError">
+                        <div style="color:green;">
+                            {{ saveError }}
+                        </div>
+                    </div>
+                    <div ng-show="listError">
+                        <div style="color:red">
+                            {{ listError }}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div ng-show="listError">
+        <div style="color:red">
+            {{ listError }}
+        </div>
+    </div>
+    @*</div>*@
+</form>

@@ -1,0 +1,119 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Manage Sectiones";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/SectionModule.js"></script>
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+@*<span class="pageTitle">Manage Sections</span>
+<br />*@<br />
+<form ng-app="adminModule1" ng-controller="sectionController"
+      name="myForm" novalidate>
+    <div id="dvListing" style="height: 520px">
+        <div id="dvSearch">
+            <table border="0">
+                <tr>
+                    <td><input type="search" placeholder="Search Section" ng-model="search.SectionName" /></td>
+                    <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" /></td>
+                </tr>
+            </table>
+        </div>
+        <div style="width:inherit;height:490px; overflow-y:auto;"><table border="0" class="listing">
+            <thead>
+                <tr>
+                    <td colspan="4" class="TableSubHeader">Section</td>
+                </tr>
+            </thead>
+            <tr ng-repeat="obj in listData | filter: search" ng-class="{selected: (obj.SectionCode == selectedObject.SectionCode && obj.CompanyCode == selectedObject.CompanyCode)}" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)" ng-show="selectedObject.CompanyCode">
+                <td>{{obj.SectionName}}</td>
+            </tr>
+        </table>
+        </div>
+        <span ng-hide="listData">@*Loading, please wait...*@</span>
+    </div>
+    <div id="dvFormContainer" class="DetailPage">
+        <table style="width: 850px">
+            <tr>
+                <td colspan="4" class="TableHeader">Manage Section</td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Company<span class="required">*</span></td>
+                <td class="FormTableContainer" colspan="3">
+                    <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="objCom.CompanyCode as objCom.CompanyName for objCom in listCompany" class="ComboBoxesFlexible" dosbox="true" style="width: 300px" ng-change="CompanyCode_Change()">
+                        <option value=""></option>
+
+                    </select>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Name<span class="required">*</span></td>
+                <td class="FormTableContainer" colspan="3">
+                    <input name="SectionName" type="text" ng-model="selectedObject.SectionName" dosbox="true" style="width: 300px" class="InputBoxes" maxlength="50" required />
+                    <span style="color:red" ng-show="myForm.SectionName.$dirty && myForm.SectionName.$invalid">
+                        <span ng-show="myForm.SectionName.$error.required"></span>
+                    </span>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Short Name<span class="required">*</span></td>
+                <td class="FormTableContainer">
+                    <input name="ShortName" type="text" ng-model="selectedObject.ShortName" dosbox="true" style="width: 300px" class="InputBoxes" maxlength="10" required />
+                    <span style="color:red" ng-show="myForm.ShortName.$dirty && myForm.ShortName.$invalid">
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Capacity<span class="required">*</span></td>
+                <td class="FormTableContainer">
+                    <input name="Capacity" type="number" max="9999" min="0" ng-model="selectedObject.Capacity" dosbox="true" style="width: 300px" class="InputBoxes" maxlength="4" required />
+                    <span style="color:red" ng-show="myForm.Capacity.$dirty && myForm.Capacity.$invalid">
+                        <span ng-show="myForm.Capacity.$error.required"></span>
+                    </span>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Status<span class="required">*</span></td>
+                <td class="FormTableContainer">
+                    <select ng-model="selectedObject.Status" id="status" dosbox="true" class="ComboBoxesFlexible" style="width: 300px">
+                        <option value="true" ng-selected="selectedObject.Status==true">Active</option>
+                        <option value="false" ng-selected="selectedObject.Status==false">In-Active</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" class="TableHeader">
+                    <div style="float: right">
+                        <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                               dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                        <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode"
+                               dosbox="true" class="Buttons" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div ng-show="saveError">
+                        <div style="color:green;">
+                            {{ saveError }}
+                        </div>
+                    </div>
+                    <div ng-show="listError">
+                        <div style="color:red">
+                            {{ listError }}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>

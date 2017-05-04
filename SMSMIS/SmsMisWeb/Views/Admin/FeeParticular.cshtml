@@ -1,0 +1,118 @@
+﻿@model  SmsMis.Models.Console.Admin.FeeParticular
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Manage FeeParticular";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/FeeParticularModule.js"></script>
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+<span class="pageTitle">Manage Fee Particular</span>
+<br /><br />
+<form ng-app="adminModule1" ng-controller="feeparticularController"
+      name="myForm" novalidate>
+    @*<div ng-app="adminModule1" ng-controller="branchController">*@
+    <div id="dvListing">
+        <div id="dvSearch">
+            <table border="0">
+                <tr>
+                    <td><input type="search" placeholder="Search Particular Name" ng-model="search.ParticularName" /></td>
+                    <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" /></td>
+                </tr>
+            </table>
+        </div>
+        <table border="0" class="listing">
+            <thead>
+                <tr>
+                    <th>Manage Fee Particular</th>
+                </tr>
+            </thead>
+            <tr ng-repeat="obj in listData | filter: search" ng-class="{selected: (obj.CompanyCode == selectedObject.CompanyCode && obj.ParticularCode == selectedObject.ParticularCode)}" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)">
+                <td>{{obj.ParticularName}}</td>
+            </tr>
+        </table>
+        <span ng-hide="listData">@*Loading, please wait...*@</span>
+    </div>
+    <div id="dvFormContainer">
+        <table style="width: 850px">
+            <tr>
+                <td>Company</td>
+                <td>
+                    <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" class="form-control" ng-disabled="isEditMode" dosbox="true">
+                        <option value=""></option>
+                    </select>
+                    <span style="color:red">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px;">Particular</td>
+                <td>
+                    <input id="ParticularName" type="text" ng-model="selectedObject.ParticularName" />
+                </td>
+            </tr>
+            <tr>
+                <td>Recurring</td>
+                <td>
+                    <select id="Recurring" ng-model="selectedObject.Recurring" ng-options="type.Recurring as type.Recurring for type in listFeeParticularRecurringType" class="form-control" dosbox="true">
+                        <option value=""></option>
+                    </select>
+                    <span style="color:red">*</span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px;">First Fee Particular</td>
+                <td>
+                    <input type="checkbox" ng-model="selectedObject.FirstFeeParticular" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px;">Regular Fee Particular</td>
+                <td>
+                    <input type="checkbox" ng-model="selectedObject.RegularFeeParticular" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px;">Scholarship Allowed</td>
+                <td>
+                    <input type="checkbox" ng-model="selectedObject.ScholarshipAllowed" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px;">Discount Allowed</td>
+                <td>
+                    <input type="checkbox" ng-model="selectedObject.DiscountAllowed" />
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px;">Optional Particular </td>
+                <td>
+                    <input type="checkbox" ng-model="selectedObject.Optional" />
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                           class="btn btn-default" dosbox="true" ng-disabled="isValid()" />
+                    <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode"
+                           class="btn btn-default" dosbox="true" />
+                    <div ng-show="saveError">
+                        <div style="color:green"> {{ saveError }}</div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div ng-show="listError">
+        <div style="color:red">
+            {{ listError }}
+        </div>
+    </div>
+    @*</div>*@
+</form>

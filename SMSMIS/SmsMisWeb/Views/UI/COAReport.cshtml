@@ -1,0 +1,99 @@
+﻿@model  SmsMis.Models.Console.Client.COALevels
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "Bank";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/COAReportModule.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+}
+<script>
+    showShield();
+</script>
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+<span class="pageTitle">Manage Chart of Accounts</span>
+<br /><br />
+
+<div ng-app="clientModule1" ng-controller="ChartOfAccountsController">
+    @*<div ng-app="adminModule1" ng-controller="AdmissionInquiryController">*@
+
+    <table width="100%">
+        <tr>
+
+            <td style="width:100%;">
+                <div id="dvFormContainer" class="DetailPage">
+
+                    @*<table style="width: 100%">
+                        <tr>
+                            <td>*@
+                                <table style="width: 500px">
+                                    <tr>
+                                        <td class="TableHeader">
+                                            <span class="requiredCaption">Chart of Accounts  {{selectedObject.AccountCodedummy}} {{selectedObject.AccountTitledummy}}</span>
+
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr id="trCompanyInfo">
+                                        <td>
+                                            <table style="width: 100%" class="FormTable" cellspacing="1" cellpadding="2" border="0">
+                                                <tr>
+                                                    <td style="width:14%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Company </span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:19%" class="FormTableContainer">
+                                                        <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" ng-change="getCOACompanyWise()" class="ComboBoxesFlexible"  dosbox="true">
+                                                            <option value=""></option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="FormCaptionLeft">Branch</td>
+                                                    <td colspan="5" class="FormTableContainer">
+                                                        <select id="branchCode" ng-model="selectedObject.BranchCode" ng-options="obj.BranchCode as obj.BranchName for obj in listBranch" class="ComboBoxesFlexible" dosbox="true">
+                                                            <option value=""></option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                               
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="TableHeader">
+                                        <td align="right" style="padding-right:5px;">
+                                            <input type="button" id="btnAdd" value="Report" ng-click="generateReport();" dosbox="true" class="Buttons" />
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div ng-show="saveError">
+                                                <div style="color:green">
+                                                    {{ saveError }}
+                                                </div>
+                                            </div>
+                                            <div ng-show="listError">
+                                                <div style="color:red">
+                                                    {{ listError }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            @*</td>
+                        </tr>
+                    </table>*@
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    @*</div>*@
+</div>

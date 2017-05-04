@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Operation Activities";
+}
+
+@section Scripts {
+    <script src="~/ng-Scripts/_bpmDepartmentModule.js?ver=1.0"></script>
+}
+<div ng-app="adminModule" ng-controller="branchesController">
+     <div> Branches <select ng-model="selectedObject.comBranches" id="Branch" ng-options="comBranches.Name for comBranches in regions track by comBranches.BranchID" class="form-control" dosbox="true"></select> </div>
+    <div>Departments  <select ng-model="selectedObject.comDepartment" id="Department" ng-options="comDepartment.Name for comDepartment in departments track by comDepartment.DepartmentID" class="form-control" dosbox="true"></select> </div>
+    <div>
+        Operations <select ng-model="selectedObject.comOperations" id="Operation" ng-options="comOperations.OperationName for comOperations in operations track by comOperations.OperationID" class="form-control" dosbox="true"></select>
+    </div>
+    <div>
+        <select id="cboBraches">
+            <option value="1"> Lahore </option>
+        </select>
+    </div>
+    <div ng-show="listError">
+        List data could not be loaded: {{listError}}
+    </div>
+    <div style="height:50px"></div>
+</div>

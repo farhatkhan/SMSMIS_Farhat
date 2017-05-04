@@ -1,0 +1,292 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @{
+        ViewBag.Title = "SMS IMS Administration Console";
+    }
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/design/console")
+
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Resources/ConsoleUI.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+    <script src="~/Resources/ControlsCommon.js"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="~/Resources/_ngCommons.js"></script>
+    @if (IsSectionDefined("scripts"))
+    {
+        @RenderSection("scripts")
+    }
+    <style>
+        #dvShield {
+            background-color: #f3f3f3;
+            opacity: 0.8;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            z-index: 100;
+        }
+
+            #dvShield div {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                padding: 15px;
+                color: #fff;
+                background-color: #02173d;
+                font-size: 18pt;
+                border-radius: 6px;
+            }
+
+        #dvShieldDelete {
+            background-color: #f3f3f3;
+            opacity: 0.8;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            z-index: 100;
+        }
+
+            #dvShieldDelete div {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                padding: 15px;
+                color: #fff;
+                background-color: #02173d;
+                font-size: 18pt;
+                border-radius: 6px;
+            }
+
+        #dvShieldSave {
+            background-color: #f3f3f3;
+            opacity: 0.8;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            z-index: 100;
+        }
+
+            #dvShieldSave div {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                padding: 15px;
+                color: #fff;
+                background-color: #02173d;
+                font-size: 18pt;
+                border-radius: 6px;
+            }
+
+        .pageShield {
+            background-color: #f3f3f3;
+            opacity: 0.8;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            z-index: 100;
+        }
+
+        .allCenterObject {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            padding: 2px;
+            background-color: #02173d;
+            border-radius: 1px;
+            z-index: 200;
+        }
+
+        .invalidvalue {
+            border: 1px solid red !important;
+        }
+    </style>
+
+    <script>
+        function showShield() {
+            $('#dvShield').fadeIn();
+        }
+        function hideShield() {
+            $('#dvShield').fadeOut();
+        }
+        function showSaveShield() {
+            $('#dvShieldSave').fadeIn();
+        }
+        function hideSaveShield() {
+            $('#dvShieldSave').fadeOut();
+        }
+        function showDeleteShield() {
+            $('#dvShieldDelete').fadeIn();
+        }
+        function hideDeleteShield() {
+            $('#dvShieldDelete').fadeOut();
+        }
+        function hideAllShield() {
+            hideShield();
+            hideSaveShield();
+            hideDeleteShield();
+        }
+    </script>
+</head>
+<body>
+    <span class="pageTitle" style="padding-left: 30px;">@ViewBag.Title </span>
+    <div id="toolbarContainer">
+        <table border="0" class="adminToolbar">
+            <tr>
+                <td class="leftCell">&nbsp;</td>
+                <td class="middleCell" id="parentMenuContainer"></td>
+                <td class="middleCell" style="width: 16px; cursor:pointer;" onclick="location='/UI/Home';"><img src="~/images/UI/home-icon.png" /> </td>
+                <td class="rightCell">&nbsp;</td>
+            </tr>
+        </table>
+        <div class="toolisland" id="tblPopup"></div>
+    </div>
+    <div class="adminBody">
+        @RenderBody()
+    </div>
+    <div id="dvShield" style="display:none">
+        <div>Loading, please wait...</div>
+    </div>
+    <div id="dvShieldSave" style="display:none">
+        <div>Saving, please wait...</div>
+    </div>
+    <div id="dvShieldDelete" style="display:none">
+        <div>Deleting, please wait...</div>
+    </div>
+    <script>
+        String.prototype.padRight = function (l, c) {
+            return this + Array(l - this.length + 1).join(c || " ");
+        }
+
+        // Pad Left
+        String.prototype.padLeft = function (l, c) {
+            return Array(l - this.length + 1).join(c || " ") + this;
+        }
+
+    </script>
+</body>
+</html>
+
+@*<!DOCTYPE html>
+<html>
+<head>
+@{
+    ViewBag.Title = "SMS IMS Administration Console";
+}
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/design/console")
+    
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Resources/ConsoleUI.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+    <script src="~/Resources/ControlsCommon.js"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="~/Resources/_ngCommons.js"></script>
+    @if (IsSectionDefined("scripts"))
+    {
+        @RenderSection("scripts")
+    }
+    <style>
+        #dvShield {
+            background-color: #f3f3f3;
+            opacity: 0.8;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            z-index: 100;
+        }
+
+            #dvShield div {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                padding: 15px;
+                color: #fff;
+                background-color: #02173d;
+                font-size: 18pt;
+                border-radius: 6px;
+            }
+
+        .pageShield {
+            background-color: #f3f3f3;
+            opacity: 0.8;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            z-index: 100;
+        }
+
+        .allCenterObject {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            padding: 2px;
+            background-color: #02173d;
+            border-radius: 1px;
+            z-index: 200;
+        }
+                .invalidvalue {
+        border: 1px solid red !important;
+    }
+    </style>
+
+    <script>
+        function showShield() {
+            $('#dvShield').fadeIn();
+        }
+        function hideShield() {
+            $('#dvShield').fadeOut();
+        }
+    </script>
+</head>
+<body>
+    <span class="pageTitle" style="padding-left: 30px;">@ViewBag.Title </span>
+    <div id="toolbarContainer">
+        <table border="0" class="adminToolbar">
+            <tr>
+                <td class="leftCell">&nbsp;</td>
+                <td class="middleCell" id="parentMenuContainer"></td>
+                <td class="middleCell" style="width: 16px; cursor:pointer;" onclick="location='/UI/Home';"><img src="~/images/UI/home-icon.png" /> </td>
+                <td class="rightCell">&nbsp;</td>
+            </tr>
+        </table>
+        <div class="toolisland" id="tblPopup"></div>
+    </div>
+    <div class="adminBody">
+        @RenderBody()
+    </div>
+    <div id="dvShield" style="display:none">
+        <div>Loading Please wait</div>
+    </div>
+    <script>
+    </script>
+</body>
+</html>*@

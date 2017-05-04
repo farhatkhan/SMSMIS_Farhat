@@ -1,0 +1,249 @@
+﻿@model  SmsMis.Models.Console.Client.ChartOfAccounts
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "Bank";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/ChartOfAccountsModule.js?var=1.1"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+}
+<script>
+    showShield();
+</script>
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+    .selected {
+    background-color:lightgray !important;
+}
+
+</style>
+
+
+
+<div ng-app="clientModule1" ng-controller="ChartOfAccountsController">
+    @*<div ng-app="adminModule1" ng-controller="AdmissionInquiryController">*@
+
+    <table width="100%">
+        <tr>
+            
+            <td style="width:100%;">
+                <div id="dvFormContainer" class="DetailPage" style="width:80%">
+
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td class="TableHeader">
+                                            <span class="requiredCaption">Chart of Accounts  {{selectedObject.AccountCodedummy}} {{selectedObject.AccountTitledummy}}</span>
+
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr id="trCompanyInfo">
+                                        <td>
+                                            <table style="width: 100%" class="FormTable" cellspacing="1" cellpadding="2" border="0">
+                                                <tr>
+                                                    <td style="width:14%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Company </span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:19%" class="FormTableContainer">
+                                                        <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" ng-change="getCOACompanyWise()" class="ComboBoxesFlexible" dosbox="true">
+                                                        </select>
+                                                    </td>
+                                                    <td style="width:14%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Account Code</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:19%"  class="FormTableContainer">
+                                                        <input type="text" id="AccountCode" ng-blur="padding();" ng-model="selectedObject.AccountCode" maxlength="{{selectedObject.LevelLength}}" ng-disabled="!isNew" class="ComboBoxesFlexible" dosbox="true"></input>
+                                                        
+                                                    </td>
+                                                    <td style="width:14%" class="FormCaptionLeft" nowrap>
+                                                        <span class="requiredCaption">Transaction Level</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:19%" class="FormTableContainer">
+                                                        <input type="checkbox" id="tType" ng-model="selectedObject.TransactionType" class="ComboBoxesFlexible" ng-disabled="LevelD || selectedObject.LevelId == '1'" ng-change="chkType(selectedObject.TransactionType)" dosbox="true"></input>
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:14%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Account Title</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:19%" class="FormTableContainer">
+                                                        <input type="text" id="AccountTitle" ng-model="selectedObject.AccountTitle" maxlength="255" class="ComboBoxesFlexible" dosbox="true"></input>
+                                                    </td>
+
+                                                    <td nowrap="nowrap" style="width:14%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Account Type</span>
+                                                    </td>
+                                                    <td style="width:19%" class="FormTableContainer" nowrap="nowrap">
+                                                                                                                                                        @*option.name for option in data.availableOptions track by option.id*@
+                                                        <select id="AccountType" ng-model="selectedObject.AccountType" class="ComboBoxesFlexible" ng-options="obj.code as obj.type for obj in listAccType" ng-disabled="!selectedObject.CompanyCode || selectedObject.LevelId == '1'" dosbox="true">
+                                                        </select>
+                                                        <div ng-show="selectedObject.AccountType == 'B' && oldAccountType == 'B' && selectedObject.TransactionType && !isFirstTimeBank " style="float:right">
+                                                            <a ng-click="openClient()" href="#">Edit Bank</a>
+                                                        </div>
+                                                    </td>
+                                                    <td style="width:14%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Status</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:19%" class="FormTableContainer">
+                                                        <select id="cboStatus" ng-model="selectedObject.Status" dosbox="true">
+                                                            <option value="1">Active</option>
+                                                            <option value="0">In-Active</option>
+                                                        </select>
+                                                    </td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:14%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Short Name</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:19%" class="FormTableContainer">
+                                                        <input type="text" id="ShortName" ng-model="selectedObject.ShortName" maxlength="255" class="ComboBoxesFlexible" dosbox="true"></input>
+                                                    </td>
+                                                    <td style="width:14%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Remarks</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" class="FormTableContainer" style="width:52%" colspan="3">
+                                                        <input type="text" id="Remarks" ng-model="selectedObject.Remarks" maxlength="255" class="ComboBoxesFlexible" dosbox="true"></input>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    
+                                                    <td class="FormCaptionLeft" style="vertical-align:top;width:14%">Branch</td>
+                                                    <td colspan="5" class="FormTableContainer" style="width:85%">
+                                                        <div style="height:125px;overflow-y:auto">
+                                                            <div ng-repeat="br in listBranch">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input type="checkbox" ng-model="br.isSelected">
+                                                                        </td>
+                                                                        <td>
+                                                                            {{br.BranchName}}
+
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" class="FormCaptionLeft" colspan="6" style="width:99%">
+                                                        <input type="text" ng-model="search.AccountTitle" placeholder="Search the Account Title" ng-show="listData.length > 0" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" class="FormCaptionLeft" colspan="6" style="width:99%">
+                                                        <div style="height:350px; overflow-y:auto">
+                                                            <table width="100%" class="FormTable" border="1" cellpadding="0" cellspacing="0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>SrNo</th>
+                                                                        <th>Account Code</th>
+                                                                        <th>Account Title</th>
+                                                                        <th>Level</th>
+                                                                        <th></th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr ng-repeat="session in listData  | filter: search" style="cursor:pointer;" ng-style="{color:'{{session.LevelColor}}'}" ng-class="{selected :session.AccountCode == selectedRow}">
+                                                                        <td ng-click="loadData(session);">{{ $index +1}}</td>
+                                                                        <td ng-click="loadData(session);"><span id="txtAccountCode{{$index}}" ng-model="session.AccountCode">{{session.AccountCode}}</span></td>
+                                                                        <td ng-click="loadData(session);"><span id="txtAccountTitle{{$index}}" ng-model="session.AccountTitle">{{session.AccountTitle}}</span></td>
+                                                                        <td ng-click="loadData(session);"><span id="LevelId{{$index}}" ng-model="session.LevelId">{{session.LevelId}}</span></td>
+                                                                        <td ng-click="loadData(session,true);" style="color:#0026ff">Edit</td>
+                                                                        <td><img src="~/images/delete_entry.gif" ng-click="deleteRow(session)"></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="TableHeader">
+                                        <td align="right" style="padding-right:5px;">
+                                            <input type="button" id="btnAdd" value="Reset" ng-click="clear();" dosbox="true" class="Buttons" />
+                                            <input type="submit" id="btnSumbit" value="Save" ng-click="save();" dosbox="true" class="Buttons" />
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div ng-show="saveError">
+                                                <div style="color:green">
+                                                    {{ saveError }}
+                                                </div>
+                                            </div>
+                                            <div ng-show="listError">
+                                                <div style="color:red">
+                                                    {{ listError }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <input type="hidden" id="hdnAC"  />
+    <input type="hidden" id="hdnCompany"  />
+    <div class="screenProtector" id="PopupShield" style="overflow: hidden;display:none;">
+
+    </div>
+    <div class="allCenterObject" style="z-index:5000; display:none;background-color:#fff;"
+         id="ClientInfoPopup">
+        <div>
+            <table style="border-spacing: 0px;width:100%">
+                <tr style="height: 35px;background-color: rgb(11, 46, 87);  ">
+                    <td colspan="2" style="color: white;padding: 6px;font-weight: bold;">
+                        Add Bank
+                        <div style="float:right;cursor:pointer;" onclick="closepopup()">X</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="top">
+                        <table border="1">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <iframe id="ifrClientInfo" 
+                                                style="width:580px;height:360px;"></iframe>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        
+        function closepopup() {
+            $('#ClientInfoPopup').fadeOut(300);
+            $('#PopupShield').fadeOut(300);
+            $('#ifrClientInfo').attr("src", "about:blank");
+        }
+    </script>
+    @*</div>*@
+</div>

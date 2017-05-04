@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmsMisWeb", "SmsMisWeb\SmsMisWeb.csproj", "{233A6BEA-E99A-42A4-905F-DC0D5C8B43F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmsMis.Models.Console", "SmsMis.Models.Console\SmsMis.Models.Console.csproj", "{68214F6F-3E0C-48FE-A2B3-6907091EBA19}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Web|Any CPU = Debug Web|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{233A6BEA-E99A-42A4-905F-DC0D5C8B43F5}.Debug Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{233A6BEA-E99A-42A4-905F-DC0D5C8B43F5}.Debug Web|Any CPU.Build.0 = Debug|Any CPU
+		{233A6BEA-E99A-42A4-905F-DC0D5C8B43F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{233A6BEA-E99A-42A4-905F-DC0D5C8B43F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{233A6BEA-E99A-42A4-905F-DC0D5C8B43F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{233A6BEA-E99A-42A4-905F-DC0D5C8B43F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68214F6F-3E0C-48FE-A2B3-6907091EBA19}.Debug Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{68214F6F-3E0C-48FE-A2B3-6907091EBA19}.Debug Web|Any CPU.Build.0 = Debug|Any CPU
+		{68214F6F-3E0C-48FE-A2B3-6907091EBA19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68214F6F-3E0C-48FE-A2B3-6907091EBA19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68214F6F-3E0C-48FE-A2B3-6907091EBA19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68214F6F-3E0C-48FE-A2B3-6907091EBA19}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://ghaziali.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SmsMis.Models.Console\\SmsMis.Models.Console.csproj
+		SccProjectName1 = SmsMis.Models.Console
+		SccLocalPath1 = SmsMis.Models.Console
+		SccProjectUniqueName2 = SmsMisWeb\\SmsMisWeb.csproj
+		SccProjectName2 = SmsMisWeb
+		SccLocalPath2 = SmsMisWeb
+	EndGlobalSection
+EndGlobal

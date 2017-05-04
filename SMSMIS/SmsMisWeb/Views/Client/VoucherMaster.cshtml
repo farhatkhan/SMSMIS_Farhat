@@ -1,0 +1,282 @@
+﻿@model  SmsMis.Models.Console.Client.VoucherMaster
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "Bank";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/VoucherMasterModule.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+<span class="pageTitle">Manage Voucher</span>
+<br /><br />
+
+<div ng-app="clientModule1" ng-controller="VoucherController">
+    @*<div ng-app="adminModule1" ng-controller="AdmissionInquiryController">*@
+
+    <table style="width:100%">
+        <tr>
+            <td style="width:30%;vertical-align:top">
+                <div id="dvListing">
+                    <div id="dvSearch">
+                        <table border="0">
+                            <tr>
+                                <td><input type="search" placeholder="Search VoucherType" ng-model="search.VoucherNo" /></td>
+                                <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" class="Buttons" /></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table border="0" class="listing">
+                        <thead>
+                            <tr>
+                                <th>Manage Voucher</th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="obj in listData | filter: search" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)">
+                            <td>{{obj.VoucherNo}}</td>
+                        </tr>
+                    </table>
+                    <span ng-hide="listData">@*Loading, please wait...*@</span>
+                </div>
+            </td>
+            <td style="width:70%;vertical-align:top">
+                <div id="dvFormContainer" class="DetailPage">
+
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td class="TableHeader">
+                                            Voucher 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="TableSubHeader">Voucher Detail</td>
+                                    </tr>
+                                    <tr id="trCompanyInfo">
+                                        <td>
+
+                                            <table style="width: 100%" class="FormTable" cellspacing="1" cellpadding="2" border="0">
+                                                <tr>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Company </span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" ng-change="getCOACompanyWise()" class="ComboBoxesFlexible" ng-disabled="isEditMode" dosbox="true">
+                                                            <option value=""></option>
+                                                        </select>
+                                                    </td>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Branch</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <select id="BranchCode" ng-model="selectedObject.BranchCode" ng-options="obj.BranchCode as obj.BranchName for obj in listBranch | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" ng-disabled="!selectedObject.CompanyCode || isEditMode" dosbox="true"></select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Voucher Type</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <select id="BranchCode" ng-model="selectedObject.VoucherCode" ng-options="obj.VoucherCode as obj.VoucherName for obj in listVoucherType | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" ng-disabled="!selectedObject.CompanyCode || isEditMode" dosbox="true">
+                                                            <option value=""></option>
+                                                        </select>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Voucher Date</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="IssueDate" ng-model="selectedObject.VoucherDate" my-datepicker class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Voucher #</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="IssueDate" readonly="readonly" ng-model="selectedObject.VoucherNo" class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Remarks</span>
+                                                        
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="IssueDate" ng-model="selectedObject.Remarks" class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Instrument Type</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="txtInstrumentCode" ng-model="selectedObject.InstrumentName" autocomplete="off" ng-change="SetSelectedInstrumentType(selectedObject)" class="ComboBoxesFlexible" dosbox="true"></input>
+                                                        <div style="max-width:400px; z-index: 10000; position: fixed;background-color:#ffffff; ">
+                                                            <table class="QuickSearchResults insType" border="1">
+                                                                <tr style="background-color:#0094ff; font-weight:bold; ">
+                                                                    <td style="text-align:center;">Title</td>
+                                                                </tr>
+                                                                <tr ng-repeat="x in InstrumentType | filter:selectedObject.InstrumentName | limitTo: 10" ng-click="GetSelectedInstrumentName(x)" style="cursor:pointer">
+                                                                    <td>{{ x.InstrumentName }}</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Instrument No</span>
+
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="txtInstrumentNo" ng-model="selectedObject.InstrumentNo" class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Instrument Date</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="txtInstrumentDate" my-datepicker ng-model="selectedObject.InstrumentDate" class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Exchange Rate</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="txtExchangeRate" ng-model="selectedObject.ExchangeRate" ng-disabled="" class="ComboBoxesFlexible" dosbox="true"></input>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Currency</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <select id="ddlCurrency" ng-model="selectedObject.CurrencyCode" ng-change="currencyChanged(selectedObject.CurrencyCode)" ng-options="obj.CurrencyCode as obj.CurrencyName for obj in listCurrency"  class="ComboBoxesFlexible" dosbox="true">
+                                                        </select>
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" class="FormCaptionLeft" colspan="6">
+                                                        <table width="100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Sr#</th>
+                                                                    <th>Account Code</th>
+                                                                    <th>Account Title</th>
+                                                                    <th>Narration</th>
+                                                                    <th id="tdLCDebit">Debit</th>
+                                                                    <th id="tdLCCredit">Credit</th>
+                                                                    <th id="tdFCDebit">Debit</th>
+                                                                    <th id="tdFCCredit">Credit</th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr ng-repeat="session in actionList">
+                                                                    <td>{{ $index +1}}</td>
+                                                                    <td>
+                                                                        <input type="text" id="txtAccountCode{{$index}}" ng-model="session.AccountCode" autocomplete="off" ng-change="SetSelectedAccountTitle(session,{{$index}})" />
+                                                                        <div style="width: 400px; z-index: 10000; position: fixed;background-color:#ffffff; ">
+                                                                            <table class="QuickSearchResults abc{{$index}}" border="1">
+                                                                                <tr style="background-color:#0094ff; font-weight:bold; ">
+                                                                                    <td style="text-align:center;">Code</td>
+                                                                                    <td style="text-align:center;">Title</td>
+                                                                                </tr>
+                                                                                <tr ng-repeat="x in listCOA | filter:session.AccountTitle | limitTo: 10" ng-click="GetSelectedAccountTitle(session,x,$parent.$index)" style="cursor:pointer">
+                                                                                    <td>{{ x.AccountCode }}</td>
+                                                                                    <td style="text-align:left;">{{ x.AccountTitle }}</td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" id="txtAccountTitle{{$index}}" disabled="disabled" ng-model="session.AccountTitle" autocomplete="off"  />
+                                                                    </td>
+                                                                    <td><input type="text" id="txtNarration{{$index}}" ng-model="session.Narration" ng-change="reSort()" /></td>
+                                                                    
+                                                                    <td><input type="text" id="txtDebit{{$index}}" ng-model="session.LC_Debit" ng-change="reSort()" /></td>
+                                                                    <td><input type="text" id="txtCredit{{$index}}" ng-model="session.LC_Credit" ng-change="reSort()" ng-keydown="handleKeyEvent($event,$index)" /></td>
+                                                                    <td ><input type="text" id="txtFDebit{{$index}}" ng-model="session.FC_Debit" ng-disabled="selectedObject.CurrencyCode == 'PKR'" ng-change="reSort()" /></td>
+                                                                    <td ><input type="text" id="txtFCredit{{$index}}" ng-model="session.FC_Credit" ng-disabled="selectedObject.CurrencyCode == 'PKR'" ng-change="reSort()" ng-keydown="handleKeyEvent($event,$index)" /></td>
+                                                                    <td><img src="~/images/delete_entry.gif" ng-click="deleteActions($index,false)"></td>
+                                                                </tr>
+                                                                <tr><td colspan="9"></td></tr>
+                                                                <tr style="display:none"><td colspan="4"></td><td>Dr Total</td><td>Cr Total</td><td>Dr Total</td><td>Cr Total</td><td></td> </tr>
+                                                                <tr><td colspan="4"></td><td><label for="totalDr" ng-model="TotalLCDebit">{{TotalLCDebit}}</label>  </td><td><label for="totalCr" ng-model="TotalLCCredit">{{TotalLCCredit}}</label></td>
+                                                                    <td><label for="totalFCDr" ng-model="TotalFCDebit">{{TotalFCDebit}}</label>  </td>
+                                                                    <td><label for="totalFCCr" ng-model="TotalFCCredit">{{TotalFCCredit}}</label></td><td></td> </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+
+                                                </tr>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr class="TableHeader">
+                                        <td align="right" style="padding-right:5px;">
+                                            <input type="submit" id="btnSumbit" value="Save" ng-click="save();" dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                                            <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode" dosbox="true" class="Buttons" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div ng-show="saveError">
+                                                <div style="color:green">
+                                                    {{ saveError }}
+                                                </div>
+                                            </div>
+                                            <div ng-show="listError">
+                                                <div style="color:red">
+                                                    {{ listError }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $('.QuickSearchResults').hide();
+        $(document).on('keydown', ':focusable', function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                // Get all focusable elements on the page
+                var $canfocus = $(':focusable');
+
+                var index = $canfocus.index(this) + 1;
+                if (index >= $canfocus.length) index = 0;
+
+                $canfocus.eq(index).focus().select();
+            }
+        });
+    //function yearChanged() {
+    //    if (rootScope != null) rootScope.loadAllVouchers();
+    //}
+    </script>
+    @*</div>*@
+</div>

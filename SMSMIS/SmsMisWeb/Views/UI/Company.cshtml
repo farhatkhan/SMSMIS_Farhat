@@ -1,0 +1,194 @@
+﻿@model  SmsMis.Models.Console.Handlers.Admin.Company
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Manage Company";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/CompanyModule.js"></script>
+}
+
+@*<span class="pageTitle">Manage Company</span>*@
+<br />
+<form ng-app="adminModule" ng-controller="companyController"
+      name="myForm" novalidate>
+    <style>
+        .warning{
+              border:1px solid red;
+        }
+        input[type='file'] {
+          color: transparent;
+        }
+    </style>
+
+
+
+    @*<div ng-app="adminModule" ng-controller="companyController">*@
+    <div id="dvListing" style="height: 520px">
+        <div id="dvSearch">
+            <table border="0">
+                <tr>
+                    <td><input type="search" placeholder="Search Company" ng-model="search.CompanyName" /></td>
+                    <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" /></td>
+                </tr>
+            </table>
+        </div>
+        <div style="width:inherit;height:490px; overflow-y:auto;"><table border="0" class="listing">
+            <thead>
+                <tr>
+                    <th class="TableSubHeader" style="text-align: left">Company</th>
+                </tr>
+            </thead>
+            <tr ng-repeat="obj in listData | filter: search" ng-class="{selected: obj.CompanyCode == selectedObject.CompanyCode}" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)">
+                <td>{{obj.CompanyName}}</td>
+            </tr>
+        </table>
+        </div>
+        <span ng-hide="listData">@*Loading, please wait...*@</span>
+    </div>
+    <div id="dvFormContainer" class="DetailPage">
+        <table style="width: 850px">
+            <tr>
+                <td colspan="4" class="TableHeader">Manage Company</td>
+
+            </tr>
+            <tr>
+                <td style="width: 150px;" class="FormCaptionLeft">Name<span class="required">*</span></td>
+                <td colspan="3" class="FormTableContainer">
+                    <input name="CompanyName" type="text" ng-model="selectedObject.CompanyName" dosbox="true" style="width: 97%" class="InputBoxes" required />
+                    <span style="color:red" ng-show="myForm.CompanyName.$dirty && myForm.CompanyName.$invalid">
+                        @*<span ng-show="myForm.CompanyName.$error.required">*</span>*@
+                    </span>
+
+                </td>
+            </tr>
+            <tr>
+
+                <td class="FormCaptionLeft">Short Name<span class="required">*</span></td>
+                <td class="FormTableContainer" style="width: 250px;">
+                    <input name="ShortName" type="text" ng-model="selectedObject.ShortName" dosbox="true" style="width: 300px" class="InputBoxes" required />
+                    <span style="color:red" ng-show="myForm.ShortName.$dirty && myForm.ShortName.$invalid">
+                        @*<span ng-show="myForm.ShortName.$error.required">*</span>*@
+                    </span>
+                </td>
+                <td class="FormCaptionLeft" style="width: 150px;">Status</td>
+                <td class="FormTableContainer">
+                    <select ng-model="selectedObject.Status" id="status" dosbox="true" class="ComboBoxesFlexible">
+                        <option value="true" ng-selected="selectedObject.Status==true">Active</option>
+                        <option value="false" ng-selected="selectedObject.Status==false">In-Active</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Logo</td>
+                <td colspan="3" class="FormTableContainer">
+                    <input type="file" ng-model="dummy.images" accept="image/*" file-model style="width: 100%" />
+                </td>
+            </tr>
+
+            <tr>
+                <td class="FormCaptionLeft">Slogan<span class="required">*</span></td>
+                <td colspan="3" class="FormTableContainer">
+                    <input name="Salogan" type="text" ng-model="selectedObject.Salogan" dosbox="true" required style="width: 99%" class="InputBoxes" />
+                    <span style="color:red" ng-show="myForm.Salogan.$dirty && myForm.Salogan.$invalid">
+                        @*<span ng-show="myForm.Salogan.$error.required">*</span>*@
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft"> Contact person</td>
+                <td colspan="3" class="FormTableContainer"><input id="" type="text" ng-model="selectedObject.ContactPerson" dosbox="true" style="width: 99%" class="InputBoxes" /></td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Address<span class="required">*</span></td>
+                <td colspan="3" class="FormTableContainer">
+                    <input name="Address" type="text" ng-model="selectedObject.Address" dosbox="true" required style="width: 99%" class="InputBoxes" />
+                    <span style="color:red" ng-show="myForm.Address.$dirty && myForm.Address.$invalid">
+                        @*<span ng-show="myForm.Address.$error.required">*</span>*@
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft"> phone 1<span class="required">*</span></td>
+                <td class="FormTableContainer">
+                    <input name="Phone1" type="text" ng-model="selectedObject.Phone1" dosbox="true" style="width: 300px" required class="InputBoxes" />
+                    <span style="color:red" ng-show="myForm.Phone1.$dirty && myForm.Phone1.$invalid">
+                        @*<span ng-show="myForm.Phone1.$error.required">*</span>*@
+                    </span>
+                </td>
+                <td class="FormCaptionLeft">Phone 2</td>
+                <td class="FormTableContainer"><input id="" type="text" ng-model="selectedObject.Phone2" style="width: 98%" dosbox="true" class="InputBoxes" /></td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Phone 3</td>
+                <td class="FormTableContainer"><input id="" type="text" ng-model="selectedObject.Phone3" dosbox="true" style="width: 98%" class="InputBoxes" /></td>
+                <td class="FormCaptionLeft">Phone 4</td>
+                <td class="FormTableContainer"><input id="" type="text" ng-model="selectedObject.Phone4" dosbox="true" style="width: 98%" class="InputBoxes" /></td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Fax 1</td>
+                <td class="FormTableContainer"><input id="" type="text" ng-model="selectedObject.Fax1" dosbox="true" style="width: 98%" class="InputBoxes" /></td>
+                <td class="FormCaptionLeft">Fax 2</td>
+                <td class="FormTableContainer"><input id="" type="text" ng-model="selectedObject.Fax2" dosbox="true" style="width: 98%" class="InputBoxes" /></td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">URL</td>
+                <td colspan="3" class="FormTableContainer"><input id="" type="text" ng-model="selectedObject.URL" dosbox="true" style="width: 99%" class="InputBoxes" /></td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Email 1</td>
+                <td class="FormTableContainer">
+                    <input id="email1" name="email1" type="email" ng-model="selectedObject.Eamil1" style="width: 98%" dosbox="true" validate-email maxlength="50" />
+                </td>
+                <td class="FormCaptionLeft">Email 2</td>
+                <td class="FormTableContainer"><input id="email2" name="email2" type="email" ng-model="selectedObject.Email2" style="width: 98%" dosbox="true" validate-email maxlength="50" />
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">STR #</td>
+                <td class="FormTableContainer"><input id="" type="text" ng-model="selectedObject.STRNo" dosbox="true" style="width: 98%" class="InputBoxes" /></td>
+                <td class="FormCaptionLeft">NTN</td>
+                <td class="FormTableContainer"><input id="" type="text" ng-model="selectedObject.NTN" dosbox="true" style="width: 98%" class="InputBoxes" /></td>
+            </tr>
+            <tr>
+                <td colspan="4" class="TableHeader" style="text-align: right;">
+                    <div ng-show="saveError" style="float: left;">
+                        <div style="color:green"> {{ saveError }}</div>
+                    </div>
+                    <div style="float: right">
+                        <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                               dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                        <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode"
+                               dosbox="true" class="Buttons" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" colspan="2">
+                    <img ng-show="dummy.images != ''" ng-src="{{dummy.images}}" width="100" height="130" alt="Company Logo"/>
+                    <img ng-show="dummy.images == '' && selectedObject.LogoPath != undefined && selectedObject.LogoPath!= '' " ng-src="{{getImage()}}" width="100" height="130" />
+                    <img ng-show="dummy.images == '' && (selectedObject.LogoPath == undefined || selectedObject.LogoPath == '')" src="~/images/picture_not_avaialbe.gif" width="100" height="130" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div ng-show="listError">
+                        <div style="color:red">
+                            {{ listError }}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <script>
+
+            function removeClass() {
+                $('#email1').val('').removeClass('warning');
+                $('#email2').val('').removeClass('warning');
+            }
+
+        </script>
+
+
+    </div>
+</form>

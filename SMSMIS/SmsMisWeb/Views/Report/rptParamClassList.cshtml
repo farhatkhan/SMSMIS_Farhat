@@ -1,0 +1,153 @@
+﻿@model  SmsMis.Models.Console.Handlers.Admin.Branch
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Report Application List";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/rptParamClassListModule.js"></script>
+}
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+<br />
+<form ng-app="adminModule1" ng-controller="paramClassList"
+    name="myForm" novalidate>
+    <div id="dvFormContainer" class="DetailPage">
+        <table style="width: 600px">
+            <tr>
+                <td colspan="4" class="TableHeader">Class List</td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Company<span class="required">*</span></td>
+                <td class="FormTableContainer" colspan="3">
+                    <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="objCom.CompanyCode as objCom.CompanyName for objCom in listCompany" class="form-control" dosbox="true" ng-change="loadSessions()">
+                        <option value=""></option>
+
+                    </select>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Branch</td>
+                <td class="FormTableContainer" colspan="3">
+                    <select id="branchCode" ng-model="selectedObject.BranchCode" ng-options="obj.BranchCode as obj.BranchName for obj in listBranch | filter:{CompanyCode: selectedObject.CompanyCode}" class="form-control" dosbox="true" ng-change="loadSessions()">
+                        <option value=""></option>
+                    </select>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Session</td>
+                <td class="FormTableContainer">
+                    <select id="SessionCode" ng-model="selectedObject.SessionCode" ng-options="obj.SessionCode as obj.SessionName for obj in listSession | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" ng-disabled="!selectedObject.CompanyCode" dosbox="true">
+                        <option value=""></option>
+                    </select>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Class</td>
+                <td class="FormTableContainer" colspan="3">
+                    <select id="ClassCode" ng-model="selectedObject.ClassCode" ng-options="oClass.ClassCode as oClass.ClassName for oClass in listCompanyClass | filter: {CompanyCode: selectedObject.CompanyCode}" class="form-control" dosbox="true" ng-change="loadSessions()">
+                        <option value=""></option>
+                    </select>
+                </td>
+            </tr>
+
+            <!-- Class Section -->
+             <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Class Section</td>
+                 <td class="FormTableContainer" colspan="3">
+                    <select id="ClassCode" ng-model="selectedObject.SectionCode" ng-options="obj.SectionCode as obj.SectionName for obj in listAllSections | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" dosbox="true">
+                        <option value=""></option>
+                    </select>
+
+                </td>
+            </tr>
+            <!-- End -->
+
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Course</td>
+                <td class="FormTableContainer" colspan="3">
+                    <select id="CourseCode" ng-model="selectedObject.CourseCode" ng-options="oCourse.CourseCode as oCourse.CourseName for oCourse in listCompanyCourse | filter: {CompanyCode: selectedObject.CompanyCode}" ng-change="Course_Change(ccs)">
+                        <option value=""></option>
+
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Subjects</td>
+                <td class="FormTableContainer" colspan="3">
+                    <select id="SubjectCode" ng-model="selectedObject.SubjectCode" ng-options="oSubject.SubjectCode as oSubject.SubjectName for oSubject in listCompanySubjects" ng-change="Course_Change(ccs)">
+                        <option value=""></option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="FormCaptionLeft">Gender</td>
+                <td class="FormTableContainer">
+                    <select ng-model="selectedObject.Gender" class="ComboBoxesFlexible">
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+
+                </td>
+            </tr>
+            @*<tr>
+                <td class="FormCaptionLeft">From (date)</td>
+                <td class="FormTableContainer">
+                    <input type="date" ng-model="selectedObject.fromDate" />
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">To (date)</td>
+                <td class="FormTableContainer">
+                    <input type="date" ng-model="selectedObject.fromTo" />
+                </td>
+            </tr>*@
+            <tr>
+                <td colspan="4" class="TableHeader">
+                    <div style="float: right">
+                        @*<a href="@Url.Content("~/Report/CommonrdlcReport.aspx?ReportID=" + @Request.Params["ReportID"])">Show Report</a>*@
+                        <input type="submit" id="btnSumbit" value="Show Report" ng-click="showReport()"
+                            dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div ng-show="saveError">
+                        <div style="color: green;">
+                            {{ saveError }}
+                        </div>
+                    </div>
+                    <div ng-show="listError">
+                        <div style="color: red">
+                            {{ listError }}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+
+        function callReport(companyCode, BranchCode, SessionCode, ClassCode, ClassSectionCode, Gender, CourseCode, SubjectCode, SubjectSectionCode) {
+            //alert(companyCode);
+            //alert(BranchCode);
+            //alert(SessionCode);
+            //alert(ClassCode);
+            //alert(CourseCode);
+            //alert(SubjectCode);
+            var win = window.open('CommonrdlcReport.aspx?ReportID=6&companyCode=' + companyCode + '&BranchCode=' + BranchCode + '&SessionCode=' + SessionCode + '&ClassCode=' + ClassCode + '&ClassSectionCode=' + ClassSectionCode + '&Gender=' + Gender + '&CourseCode=' + CourseCode + '&SubjectCode=' + SubjectCode + '&SubjectSectionCode=' + SubjectSectionCode, '_blank');
+            win.focus();
+        }
+
+    </script>
+
+
+</form>

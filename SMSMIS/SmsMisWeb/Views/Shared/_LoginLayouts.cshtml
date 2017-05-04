@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" type="text/css" href="~/design/console.css" />
+    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+    <script src="~/Resources/ControlsCommon.js"></script>
+</head>
+<body>
+    <div class="pageTitle titleBackground">School Management System Web Portal</div>
+    <table class="fullsizeDiv">
+        <tr>
+            <td align="center">
+                <span class="centerDiv">
+                    @RenderBody()
+                </span>
+            </td>
+        </tr>
+    </table>
+
+    @if (IsSectionDefined("scripts"))
+    {
+        @RenderSection("scripts")
+    }
+
+</body>
+</html>

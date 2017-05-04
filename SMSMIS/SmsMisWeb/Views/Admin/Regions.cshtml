@@ -1,0 +1,62 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Manage Regions";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/RegionModule.js"></script>
+}
+<span class="pageTitle">Manage Regions</span>
+<br /><br />
+<div ng-app="adminModule" ng-controller="regionsController">
+    <div id="dvListing">
+        <div id="dvSearch">
+            <table border="0">
+                <tr>
+                    <td><input type="search" placeholder="Search Regions" ng-model="search.Name" /></td>
+                    <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" /></td>
+                </tr>
+            </table>
+        </div>
+        <table border="0" class="listing">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tr ng-repeat="obj in listData | filter: search" ng-class="{selected: obj.RegionID == selectedObject.RegionID}" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)">
+                <td>{{obj.Name}}</td>
+                <td>{{obj.Description}}</td>
+            </tr>
+        </table>
+        <span ng-hide="listData">Loading, please wait...</span>
+    </div>
+    <div id="dvFormContainer">
+        <table>
+            <tr>
+                <td>Region Name</td>
+                <td><input id="Name" type="text" ng-model="selectedObject.Name" dosbox="true" /></td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td><input id="Description" type="text" dosbox="true" ng-model="selectedObject.Description" /></td>
+            </tr>
+           
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                           class="btn btn-default" dosbox="true" />
+                    <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-disabled="!isEditMode"
+                           class="btn btn-default" dosbox="true" />
+                    <div ng-show="saveError">
+                        Region data could not be modified: {{ saveError }}
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div ng-show="listError">
+        Region data could not be loaded: {{ listError }}
+    </div>
+</div>

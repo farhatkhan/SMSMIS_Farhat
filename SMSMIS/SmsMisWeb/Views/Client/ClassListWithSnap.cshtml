@@ -1,0 +1,192 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Report Application List";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/ClassListWithSnapModule.js"></script>
+}
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+<br />
+<form ng-app="adminModule1" ng-controller="classListWithSnapModule"
+      name="myForm" novalidate>
+    <div id="dvFormContainer" class="DetailPage" style="width: 100%">
+        <table>
+            <tr>
+                <td>
+                    <table style="width: 400px">
+                        <tr>
+                            <td colspan="4" class="TableHeader">Class List With Snap</td>
+                        </tr>
+                        <tr>
+                            <td class="FormCaptionLeft" style="width: 150px;">Company<span class="required">*</span></td>
+                            <td class="FormTableContainer" colspan="3">
+                                <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="objCom.CompanyCode as objCom.CompanyName for objCom in listCompany" class="form-control" dosbox="true" ng-change="loadSessions()">
+                                    <option value=""></option>
+
+                                </select>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FormCaptionLeft" style="width: 150px;">Branch</td>
+                            <td class="FormTableContainer" colspan="3">
+                                <select id="branchCode" ng-model="selectedObject.BranchCode" ng-options="obj.BranchCode as obj.BranchName for obj in listBranch | filter:{CompanyCode: selectedObject.CompanyCode}" class="form-control" dosbox="true" ng-change="loadSessions()">
+                                    <option value=""></option>
+                                </select>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FormCaptionLeft">Session</td>
+                            <td class="FormTableContainer">
+                                <select id="SessionCode" ng-model="selectedObject.SessionCode" ng-options="obj.SessionCode as obj.SessionName for obj in listSession | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" ng-disabled="!selectedObject.CompanyCode" dosbox="true">
+                                    <option value=""></option>
+                                </select>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FormCaptionLeft" style="width: 150px;">Class</td>
+                            <td class="FormTableContainer" colspan="3">
+                                <select id="ClassCode" ng-model="selectedObject.ClassCode" ng-options="oClass.ClassCode as oClass.ClassName for oClass in listCompanyClass | filter: {CompanyCode: selectedObject.CompanyCode}" class="form-control" dosbox="true" ng-change="loadSessions()">
+                                    <option value=""></option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <!-- Class Section -->
+                        <tr>
+                            <td class="FormCaptionLeft" style="width: 150px;">Class Section</td>
+                            <td class="FormTableContainer" colspan="3">
+                                <select id="ClassCode" ng-model="selectedObject.SectionCode" ng-options="obj.SectionCode as obj.SectionName for obj in listAllSections | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" dosbox="true">
+                                    <option value=""></option>
+                                </select>
+
+                            </td>
+                        </tr>
+                        <!-- End -->
+
+                        <tr>
+                            <td class="FormCaptionLeft" style="width: 150px;">Course</td>
+                            <td class="FormTableContainer" colspan="3">
+                                <select id="CourseCode" ng-model="selectedObject.CourseCode" ng-options="oCourse.CourseCode as oCourse.CourseName for oCourse in listCompanyCourse | filter: {CompanyCode: selectedObject.CompanyCode}" ng-change="Course_Change(ccs)">
+                                    <option value=""></option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FormCaptionLeft" style="width: 150px;">Subjects</td>
+                            <td class="FormTableContainer" colspan="3">
+                                <select id="SubjectCode" ng-model="selectedObject.SubjectCode" ng-options="oSubject.SubjectCode as oSubject.SubjectName for oSubject in listCompanySubjects" ng-change="Course_Change(ccs)">
+                                    <option value=""></option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="FormCaptionLeft">Gender</td>
+                            <td class="FormTableContainer">
+                                <select ng-model="selectedObject.Gender" class="ComboBoxesFlexible">
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="TableHeader">
+                                <input type="submit" id="btnSumbit" value="Show" ng-click="list()"
+                                       dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <div ng-show="saveError">
+                                    <div style="color: green;">
+                                        {{ saveError }}
+                                    </div>
+                                </div>
+                                <div ng-show="listError">
+                                    <div style="color: red">
+                                        {{ listError }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Roll #</td>
+                            <td><input type="text" ng-model="listDataNav.FullName" /></td>
+                        </tr>
+                        <tr>
+                            <td>Student Name:</td>
+                            <td><input type="text" ng-model="listDataNav.FullName" /></td>
+                        </tr>
+                        <tr>
+                            <td>Class:</td>
+                            <td><input type="text" ng-model="listDataNav.FullName" /></td>
+                        </tr>
+                        <tr>
+                            <td>Section:</td>
+                            <td><input type="text" ng-model="listDataNav.FullName" /></td>
+                        </tr>
+                        <tr>
+                            <td>Course</td>
+                            <td><input type="text" ng-model="listDataNav.FullName" /></td>
+                        </tr>
+                        <tr>
+                            <td>Subject Taken</td>
+                            <td><input type="text" ng-model="listDataNav.FullName" /></td>
+                        </tr>
+                        <tr>
+                            <td>Student Cell # :</td>
+                            <td><input type="text" ng-model="listDataNav.FullName" /></td>
+                        </tr>
+                        <tr>
+                            <td>Student Email :</td>
+                            <td><input type="text" ng-model="listDataNav.FullName" /></td>
+                        </tr>
+                        <tr>
+                            <td>Address :</td>
+                            <td><input type="text" ng-model="listDataNav.FullName" /></td>
+                        </tr>
+                        <tr>
+                            <td>Phone 1 :</td>
+                            <td><input type="text" ng-model="listDataNav.FullName" /></td>
+                        </tr>
+                        <tr>
+                            <td>Phone 2 :</td>
+                            <td><input type="text" ng-model="listDataNav.FullName" /></td>
+                        </tr>
+                        <tr>
+                            <td>Father Name :</td>
+                            <td><input type="text" ng-model="listDataNav.FullName" /></td>
+                        </tr>
+                        <tr>
+                            <td>Mother Name :</td>
+                            <td><input type="text" ng-model="listDataNav.FullName" /></td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">
+                                <input type="button" value=">>" ng-click="Forward()" />
+                                <input type="button" value=">|" ng-click="Last()" />
+                                <input type="button" value="|<" ng-click="First()" />
+                                <input type="button" value="<<" ng-click="Backward()" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>

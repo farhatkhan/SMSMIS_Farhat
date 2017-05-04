@@ -1,0 +1,237 @@
+﻿@model  SmsMis.Models.Console.Handlers.Admin.Branch
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Manage Branches";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/BranchModule.js"></script>
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+@*<span class="pageTitle">Manage Branch</span>*@
+<br />
+<form ng-app="adminModule1" ng-controller="branchController"
+      name="myForm" novalidate>
+
+    <style>
+        .warning {
+            border: 1px solid red;
+        }
+
+        input[type='file'] {
+            color: transparent;
+        }
+    </style>
+
+
+
+    @*<div ng-app="adminModule1" ng-controller="branchController">*@
+    <div id="dvListing">
+        <div id="dvSearch">
+            <table border="0">
+                <tr>
+                    <td><input type="search" placeholder="Search Branch" ng-model="search.BranchName" /></td>
+                    <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" /></td>
+                </tr>
+            </table>
+        </div>
+        <table border="0" class="listing">
+            <thead>
+                <tr>
+                    <td colspan="4" class="TableSubHeader">Branch</td>
+                </tr>
+            </thead>
+            <tr ng-repeat="obj in listData | filter: search" ng-class="{selected: (obj.BranchCode == selectedObject.BranchCode && obj.CompanyCode == selectedObject.CompanyCode)}" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)" ng-show="selectedObject.CompanyCode">
+                <td>{{obj.BranchName}}</td>
+            </tr>
+        </table>
+        <span ng-hide="listData">@*Loading, please wait...*@</span>
+    </div>
+    <div id="dvFormContainer" class="DetailPage">
+        <table style="width: 850px">
+            <tr>
+                <td colspan="4" class="TableHeader">Manage Branch</td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Company<span class="required">*</span></td>
+                <td class="FormTableContainer" colspan="3">
+                    <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" dosbox="true" style="width: 305px" class="ComboBoxesFlexible" ng-change="CompanyCode_Change()">
+                        <option value=""></option>
+                    </select>
+                    
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Name<span class="required">*</span></td>
+                <td class="FormTableContainer" colspan="3">
+                    <input name="BranchName" type="text" ng-model="selectedObject.BranchName" dosbox="true" style="width: 300px" class="InputBoxes" required />
+                    <span style="color:red" ng-show="myForm.BranchName.$dirty && myForm.BranchName.$invalid">
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Short Name<span class="required">*</span></td>
+                <td class="FormTableContainer">
+                    <input name="ShortName" type="text" class="InputBoxes" ng-model="selectedObject.ShortName" dosbox="true" style="width: 300px" required />
+                    <span style="color:red" ng-show="myForm.ShortName.$dirty && myForm.ShortName.$invalid">
+                    </span>
+                </td>
+                <td class="FormCaptionLeft" style="width: 150px;">Status<span class="required">*</span></td>
+                <td class="FormTableContainer">
+                    <select ng-model="selectedObject.Status" id="status" dosbox="true" style="width: 300px" class="ComboBoxesFlexible">
+                        <option value="true" ng-selected="selectedObject.Status==true">Active</option>
+                        <option value="false" ng-selected="selectedObject.Status==false">In-Active</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Logo</td>
+                <td colspan="3" class="FormTableContainer">
+                    <input type="file" ng-model="dummy.images" accept="image/*" file-model style="width: 100%" />
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Slogan<span class="required">*</span></td>
+                <td colspan="3" class="FormTableContainer">
+                    <input name="Salogan" type="text" class="InputBoxes" ng-model="selectedObject.Salogan" dosbox="true" required style="width: 300px" />
+                    <span style="color:red" ng-show="myForm.Salogan.$dirty && myForm.Salogan.$invalid">
+                    </span>
+                </td>
+            </tr>
+            <!-- Contact Person Section -->
+            <tr>
+                <td colspan="4">
+                    <table class="tbl" style="border: solid 1px #808080; width: 100%" cellspacing="1" cellpadding="1">
+                        <thead class="TableSubHeader">
+                        <th style="width: 40%; text-align: left;">Contact Person</th>
+                        <th style="width: 17%; text-align: left;">Land Line</th>
+                        <th style="width: 18%; text-align: left;">Cell</th>
+                        <th style="width: 18%; text-align: left;">Email</th>
+                        <th style="width: 5%; text-align: left;">Delete</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="contact in selectedObject.BranchContactPersonList">
+                                <td style="text-align: left;">
+                                    <input style="width: 98%; border: 0px; border-color: none;" type="text" class="InputBoxes" ng-model="contact.ContactPerson" />
+                                </td>
+                                <td style="text-align: left;">
+                                    <input style="width: 98%; border: 0px; border-color: none;" type="text" class="InputBoxes" ng-model="contact.LandLine" />
+                                </td>
+                                <td style="text-align: left;">
+                                    <input style="width: 98%; border: 0px; border-color: none;" type="text" class="InputBoxes" ng-model="contact.Cell" />
+                                </td>
+                                <td style="text-align: left;">
+                                    @*<input style="width: 98%; border: 0px; border-color: none;" type="email" class="InputBoxes" ng-model="contact.Email"  />*@
+                                    <input id="" name="email" type="email" ng-model="contact.Email" style="width: 98%" dosbox="true" ng-keydown="handleKeyEvent($event,contact)" validate-email />
+                                </td>
+                                <td style="text-align: center;">
+                                    <img src="~/images/delete_entry.gif" ng-click="deleteContact(contact)">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <!-- Contact Person Section -->
+            <tr style="display: none">
+                <td class="FormCaptionLeft">Contact Person</td>
+                <td colspan="3" class="FormTableContainer"><input id="" type="text" class="InputBoxes" ng-model="selectedObject.ContactPerson" dosbox="true" style="width: 300px" /></td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Address<span class="required">*</span></td>
+                <td colspan="3" class="FormTableContainer">
+                    <input name="Address" type="text" class="InputBoxes" ng-model="selectedObject.Address" dosbox="true" required style="width: 300px" />
+                    <span style="color:red" ng-show="myForm.Address.$dirty && myForm.Address.$invalid">
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Phone 1<span class="required">*</span></td>
+                <td class="FormTableContainer">
+                    <input name="Phone1" type="text" class="InputBoxes" ng-model="selectedObject.Phone1" dosbox="true" style="width: 300px" required />
+                    <span style="color:red" ng-show="myForm.Phone1.$dirty && myForm.Phone1.$invalid">
+                    </span>
+                </td>
+                <td class="FormCaptionLeft">Phone 2</td>
+                <td class="FormTableContainer"><input id="" type="text" class="InputBoxes" ng-model="selectedObject.Phone2" style="width: 300px" dosbox="true" /></td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Phone 3</td>
+                <td class="FormTableContainer"><input id="" type="text" class="InputBoxes" ng-model="selectedObject.Phone3" dosbox="true" style="width: 300px" /></td>
+                <td class="FormCaptionLeft">Phone 4</td>
+                <td class="FormTableContainer"><input id="" type="text" class="InputBoxes" ng-model="selectedObject.Phone4" dosbox="true" style="width: 300px" /></td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Fax 1</td>
+                <td class="FormTableContainer"><input id="" type="text" class="InputBoxes" ng-model="selectedObject.Fax1" dosbox="true" style="width: 300px" /></td>
+                <td class="FormCaptionLeft">Fax 2</td>
+                <td class="FormTableContainer"><input id="" type="text" class="InputBoxes" ng-model="selectedObject.Fax2" dosbox="true" style="width: 300px" /></td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">URL</td>
+                <td colspan="3" class="FormTableContainer"><input id="" type="text" class="InputBoxes" ng-model="selectedObject.URL" dosbox="true" style="width: 300px" /></td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Email 1</td>
+                <td class="FormTableContainer">
+                    <input id="email1" name="email1" type="email" ng-model="selectedObject.Eamil1" style="width: 98%" dosbox="true" validate-email maxlength="50" />
+                </td>
+                <td class="FormCaptionLeft">Email 2</td>
+                <td class="FormTableContainer">
+                    <input id="email2" name="email2" type="email" ng-model="selectedObject.Email2" style="width: 98%" dosbox="true" validate-email maxlength="50" />
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">STR #</td>
+                <td class="FormTableContainer"><input id="" type="text" class="InputBoxes" ng-model="selectedObject.STRNo" dosbox="true" style="width: 300px" /></td>
+                <td class="FormCaptionLeft">NTN</td>
+                <td class="FormTableContainer"><input id="" type="text" class="InputBoxes" ng-model="selectedObject.NTN" dosbox="true" style="width: 300px" /></td>
+            </tr>
+            <tr>
+                <td colspan="4" class="TableHeader">
+                    <div style="float: right">
+                        <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                               dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                        <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode"
+                               dosbox="true" class="Buttons" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top" colspan="2">
+                    <img ng-show="dummy.images != ''" ng-src="{{dummy.images}}" width="100" height="130" alt="Company Logo" />
+                    <img ng-show="dummy.images == '' && selectedObject.LogoPath != undefined && selectedObject.LogoPath!= '' " ng-src="{{selectedObject.LogoPath}}" width="100" height="130" />
+                    <img ng-show="dummy.images == '' && (selectedObject.LogoPath == undefined || selectedObject.LogoPath == '')" src="~/images/picture_not_avaialbe.gif" width="100" height="130" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div ng-show="saveError">
+                        <div style="color:green;">
+                            {{ saveError }}
+                        </div>
+                    </div>
+                    <div ng-show="listError">
+                        <div style="color:red">
+                            {{ listError }}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <script>
+
+    function removeClass() {
+        $('#email1').val('').removeClass('warning');
+        $('#email2').val('').removeClass('warning');
+    }
+
+        </script>
+
+    </div>
+</form>

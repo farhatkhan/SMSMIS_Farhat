@@ -1,0 +1,106 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Manage Coursees";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/CourseModule.js"></script>
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+@*<span class="pageTitle">Manage Courses</span>
+<br />*@<br />
+<form ng-app="adminModule1" ng-controller="courseController"
+      name="myForm" novalidate>
+    <div id="dvListing" style="height: 520px">
+        <div id="dvSearch">
+            <table border="0">
+                <tr>
+                    <td><input type="search" placeholder="Search Course" ng-model="search.CourseName" /></td>
+                    <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" /></td>
+                </tr>
+            </table>
+        </div>
+        <div style="width:inherit;height:490px; overflow-y:auto;"><table border="0" class="listing">
+            <thead>
+                <tr>
+                    <td colspan="4" class="TableSubHeader">Course</td>
+                </tr>
+            </thead>
+            <tr ng-repeat="obj in listData | filter: search" ng-class="{selected: (obj.CourseCode == selectedObject.CourseCode && obj.CompanyCode == selectedObject.CompanyCode)}" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)" ng-show="selectedObject.CompanyCode">
+                <td>{{obj.CourseName}}</td>
+            </tr>
+        </table>
+        </div>
+        <span ng-hide="listData">@*Loading, please wait...*@</span>
+    </div>
+    <div id="dvFormContainer" class="DetailPage">
+        <table style="width: 850px">
+            <tr>
+                <td colspan="4" class="TableHeader">Manage Course</td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Company<span class="required">*</span></td>
+                <td class="FormTableContainer" colspan="3">
+                    <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="objCom.CompanyCode as objCom.CompanyName for objCom in listCompany" class="ComboBoxesFlexible" dosbox="true" ng-disabled="isEditMode" ng-change="CompanyCode_Change()" style="width: 300px">
+                        <option value=""></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Name<span class="required">*</span></td>
+                <td class="FormTableContainer" colspan="3">
+                    <input name="CourseName" type="text" ng-model="selectedObject.CourseName" dosbox="true" style="width: 300px" class="InputBoxes" maxlength="50" required />
+                    <span style="color:red" ng-show="myForm.CourseName.$dirty && myForm.CourseName.$invalid">
+                        <span ng-show="myForm.CourseName.$error.required"></span>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Short Name<span class="required">*</span></td>
+                <td class="FormTableContainer">
+                    <input name="ShortName" type="text" ng-model="selectedObject.ShortName" dosbox="true" style="width: 300px" class="InputBoxes" maxlength="10" required />
+                    <span style="color:red" ng-show="myForm.ShortName.$dirty && myForm.ShortName.$invalid">
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Status<span class="required">*</span></td>
+                <td class="FormTableContainer">
+                    <select ng-model="selectedObject.Status" id="status" dosbox="true" style="width: 300px" class="ComboBoxesFlexible">
+                        <option value="true" ng-selected="selectedObject.Status==true">Active</option>
+                        <option value="false" ng-selected="selectedObject.Status==false">In-Active</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" class="TableHeader">
+                    <div style="float: right">
+                        <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                               dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                        <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode"
+                               dosbox="true" class="Buttons" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div ng-show="saveError">
+                        <div style="color:green;">
+                            {{ saveError }}
+                        </div>
+                    </div>
+                    <div ng-show="listError">
+                        <div style="color:red">
+                            {{ listError }}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>

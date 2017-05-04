@@ -1,0 +1,257 @@
+﻿@model  SmsMis.Models.Console.Client.CSMaster
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "Bank";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/CSMasterModule.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+
+<div ng-app="clientModule1" ng-controller="CSController">
+    @*<div ng-app="adminModule1" ng-controller="AdmissionInquiryController">*@
+
+    <table style="width:100%">
+        <tr>
+            <td style="width:30%;vertical-align:top">
+                <div id="dvListing">
+                    <div id="dvSearch">
+                        <table border="0">
+                            <tr>
+                                <td><input type="search" placeholder="Search Name" ng-model="search.ReportName" /></td>
+                                <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" class="Buttons" /></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table border="0" class="listing">
+                        <thead>
+                            <tr>
+                                <th>Customized Statements</th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="obj in listData | filter: search" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)">
+                            <td>{{obj.ReportName}}</td>
+                        </tr>
+                    </table>
+                    <span ng-hide="listData">@*Loading, please wait...*@</span>
+                </div>
+            </td>
+            <td style="width:70%;vertical-align:top">
+                <div id="dvFormContainer" class="DetailPage">
+
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td class="TableHeader">
+                                            Manage Customized Statements
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr id="trCompanyInfo">
+                                        <td>
+
+                                            <table style="width: 100%" class="FormTable" cellspacing="1" cellpadding="2" border="0">
+                                                <tr>
+                                                    <td style="width:20%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Company </span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:20%" class="FormTableContainer">
+                                                        <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" ng-change="getCompanyWise()" class="ComboBoxesFlexible" dosbox="true">
+                                                            <option value=""></option>
+                                                        </select>
+                                                    </td>
+                                                    <td colspan="4" style="width:60%" class="FormTableContainer"></td>
+                                                </tr>
+                                                <tr>
+                                                    
+                                                    <td nowrap="nowrap" style="width:20%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Statement Name</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:20%" class="FormTableContainer">
+                                                        <input type="text" id="idReportName" maxlength="50" ng-model="selectedObject.ReportName" class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                                    </td>
+                                                    <td colspan="4" style="width:60%" class="FormTableContainer"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" style="width:20%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Statement Title</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:20%" class="FormTableContainer">
+                                                        <input type="text" id="idReportTitle" maxlength="50" ng-model="selectedObject.ReportTitle" class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                                    </td>
+                                                    <td colspan="4" style="width:60%" class="FormTableContainer"></td>
+                                                    </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" style="width:20%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Remarks</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:20%" class="FormTableContainer">
+                                                        <input type="text" id="txtRemarks" maxlength="255" ng-model="selectedObject.Remarks" class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                                    </td>
+                                                    <td colspan="4" style="width:60%" class="FormTableContainer"></td>
+                                                </tr>
+                                                
+                                                
+                                            </table>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td nowrap="nowrap" class="FormCaptionLeft" >
+                                            <table width="100%" class="FormTable"  border="1">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Sr#</th>
+                                                        <th id="tdGID">Group ID</th>
+                                                        <th id="tdDesc">Description</th>
+                                                        <th>Sub Description</th>
+                                                        <th id="tdMain">Main</th>
+                                                        <th >COA Group</th>
+                                                        <th >Data As</th>
+                                                        <th >Inverse Sign</th>
+                                                        <th>action</th>
+                                                        <th>formula</th>
+                                                        <th>font size</th>
+                                                        <th>font style</th>
+                                                        <th>font underline</th>
+                                                        <th>top border</th>
+                                                        <th>bottom border</th>
+                                                        <th>remarks</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="session in actionList">
+                                                        <td>{{ $index +1}}</td>
+                                                        <td>
+                                                            <input type="text" id="txtGroupID{{$index}}" maxlength="6" ng-model="session.GroupId" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" id="txtDescription{{$index}}" maxlength="50" ng-model="session.Description" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" id="txtSubDescription{{$index}}" maxlength="50" ng-model="session.SubDescription" />
+                                                        </td>
+                                                        <td>
+                                                            <select id="cboMain{{$index}}" ng-model="session.Main" class="ComboBoxesFlexible" dosbox="true">
+                                                                <option value="1">True</option>
+                                                                <option value="0">False</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select id="cboNoteCode{{$index}}" ng-model="session.NoteCode" ng-options="obj.Code as obj.Description for obj in listCOAGroup" class="ComboBoxesFlexible" dosbox="true">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select id="cboNoteDataAs{{$index}}" ng-model="session.NoteDataAs" ng-options="obj.Description as obj.Description for obj in listCSDataAs" class="ComboBoxesFlexible" dosbox="true">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select id="cboInverseSign{{$index}}" ng-model="session.InverseSign" class="ComboBoxesFlexible" dosbox="true">
+                                                                <option value="1">True</option>
+                                                                <option value="0">False</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select id="cboRowAction{{$index}}" ng-model="session.RowAction" ng-options="obj.Description as obj.Description for obj in listCSRowAction " class="ComboBoxesFlexible" dosbox="true">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </td>
+                                                        <td><input type="text" id="txtRowFormula{{$index}}" maxlength="25" ng-model="session.RowFormula" /></td>
+                                                        <td><input type="text" id="txtFontSize{{$index}}" maxlength="5" ng-model="session.FontSize" /></td>
+                                                        <td>
+                                                            <select id="cboFontStyle{{$index}}" ng-model="session.FontStyle" ng-options="obj.FontStyle as obj.FontStyle for obj in listCSFontStyle" class="ComboBoxesFlexible" dosbox="true">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select id="cboFontUnderline{{$index}}" ng-model="session.FontUnderline" class="ComboBoxesFlexible" dosbox="true">
+                                                                <option value="1">True</option>
+                                                                <option value="0">False</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select id="cboTopBorder{{$index}}" ng-model="session.TopBorder" ng-options="obj.ObjectBorder as obj.ObjectBorder for obj in listCSObjectBorder" class="ComboBoxesFlexible" dosbox="true">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select id="cboBottomBorder{{$index}}" ng-model="session.BottomBorder" ng-options="obj.ObjectBorder as obj.ObjectBorder for obj in listCSObjectBorder" class="ComboBoxesFlexible" dosbox="true">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </td>
+                                                        <td><input type="text" id="txtRemarks{{$index}}" maxlength="255" ng-model="session.Remarks" ng-keydown="handleKeyEvent($event,$index)" /></td>
+                                                        <td><img src="~/images/delete_entry.gif" ng-click="deleteActions($index,false)"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+
+                                    </tr>
+                                    <tr class="TableHeader">
+                                        <td align="right" style="padding-right:5px;">
+                                            <input type="submit" id="btnSumbit" value="Save" ng-click="save();" dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                                            <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode" dosbox="true" class="Buttons" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div ng-show="saveError">
+                                                <div style="color:green">
+                                                    {{ saveError }}
+                                                </div>
+                                            </div>
+                                            <div ng-show="listError">
+                                                <div style="color:red">
+                                                    {{ listError }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $('.QuickSearchResults').hide();
+        $(document).on('keydown', ':focusable', function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                // Get all focusable elements on the page
+                var $canfocus = $(':focusable');
+
+                var index = $canfocus.index(this) + 1;
+                if (index >= $canfocus.length) index = 0;
+
+                $canfocus.eq(index).focus().select();
+            }
+        });
+    //function yearChanged() {
+    //    if (rootScope != null) rootScope.loadAllCSs();
+    //}
+    </script>
+    @*</div>*@
+</div>

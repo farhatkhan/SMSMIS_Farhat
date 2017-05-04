@@ -1,0 +1,221 @@
+﻿@model  SmsMis.Models.Console.Client.Bank
+@{
+    Layout = "~/Views/Shared/_SimpleLayout.cshtml";
+    ViewBag.Title = "Bank";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/BankPopupModule.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
+}
+<script>
+    showShield();
+</script>
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+
+
+<div ng-app="clientModule1" ng-controller="BanksController">
+    @*<div ng-app="adminModule1" ng-controller="AdmissionInquiryController">*@
+
+    <table style="width:100%">
+        <tr>
+            <td style="width:100%;">
+                <div id="dvFormContainer" class="DetailPage">
+
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td class="TableHeader">
+                                            <span class="requiredCaption">Bank</span>
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr id="trCompanyInfo">
+                                        <td>
+                                            @using (Html.BeginForm("Bank", "Client", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                            {
+                                                <table style="width: 100%" class="FormTable" cellspacing="1" cellpadding="2" border="0">
+                                                    
+                                                    <tr>
+
+                                                        <td style="width:21%" class="FormCaptionLeft">
+                                                            <span class="requiredCaption">Account Code</span>
+                                                            <span class="required">*</span>
+                                                        </td>
+                                                        <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                            @Html.TextBoxFor(m => m.AccountCode, new { @class = "InputBoxes", @readonly="true", @maxlength = "255", @dosbox = "true", data_ng_model = "selectedObject.AccountCode" })
+                                                            @Html.ValidationMessageFor(m => m.AccountCode)
+                                                            @*<select id="SessionCode" ng-model="selectedObject.AccountCode" ng-options="obj.AccountCode as obj.AccountTitle for obj in listCOA | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" ng-disabled="!selectedObject.CompanyCode" dosbox="true">
+                                                                <option value=""></option>
+                                                            </select>*@
+
+                                                        </td>
+                                                        <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                            <span class="requiredCaption">Bank Name</span>
+                                                            <span class="required">*</span>
+                                                        </td>
+                                                        <td style="width:28.5%" class="FormTableContainer">
+                                                            @Html.TextBoxFor(m => m.BankName, new { @class = "InputBoxes", @maxlength = "50", @dosbox = "true", data_ng_model = "selectedObject.BankName" })
+                                                            @Html.ValidationMessageFor(m => m.BankName)
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        
+                                                        
+                                                        <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                            <span class="requiredCaption">Short Name</span>
+                                                            <span class="required">*</span>
+                                                        </td>
+                                                        <td style="width:28.5%" class="FormTableContainer">
+                                                            @Html.TextBoxFor(m => m.ShortName, new { @class = "InputBoxes", @maxlength = "10", @dosbox = "true", data_ng_model = "selectedObject.ShortName" })
+                                                            @Html.ValidationMessageFor(m => m.ShortName)
+
+                                                        </td>
+                                                        <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                            <span class="requiredCaption">Bank Branch</span>
+                                                            <span class="required">*</span>
+                                                        </td>
+                                                        <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                            @Html.TextBoxFor(m => m.BankBranch, new { @class = "InputBoxes", @maxlength = "50", @dosbox = "true", data_ng_model = "selectedObject.BankBranch" })
+                                                            @Html.ValidationMessageFor(m => m.BankBranch)
+
+                                                        </td>
+                                                    </tr>
+
+                                                   
+                                                    <tr>
+                                                        <td style="width:21%" class="FormCaptionLeft">
+                                                            <span class="requiredCaption">Address</span>
+                                                            <span class="required">*</span>
+                                                        </td>
+                                                        <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                            @Html.TextBoxFor(m => m.Address, new { @class = "InputBoxes", @maxlength = "255", @dosbox = "true", data_ng_model = "selectedObject.Address" })
+                                                            @Html.ValidationMessageFor(m => m.Address)
+
+                                                        </td>
+                                                        <td style="width:21%" class="FormCaptionLeft">Phone 1</td>
+                                                        <td style="width:28.5%" class="FormTableContainer">
+                                                            @Html.TextBoxFor(m => m.Phone1, new { @class = "InputBoxes", @maxlength = "25", @dosbox = "true", data_ng_model = "selectedObject.Phone1" })
+                                                            @Html.ValidationMessageFor(m => m.Phone1)
+
+                                                        </td>
+                                                    </tr>
+
+                                                   
+                                                    <tr>
+                                                        <td style="width:21%" class="FormCaptionLeft">Phone 2</td>
+                                                        <td style="width:28.5%" class="FormTableContainer">
+                                                            @Html.TextBoxFor(m => m.Phone2, new { @class = "InputBoxes", @maxlength = "25", @dosbox = "true", data_ng_model = "selectedObject.Phone2" })
+                                                            @Html.ValidationMessageFor(m => m.Phone2)
+
+                                                        </td>
+                                                        <td style="width:21%" class="FormCaptionLeft">Fax</td>
+                                                        <td style="width:28.5%" class="FormTableContainer">
+                                                            @Html.TextBoxFor(m => m.Fax, new { @class = "InputBoxes", @maxlength = "25", @dosbox = "true", data_ng_model = "selectedObject.Fax" })
+                                                            @Html.ValidationMessageFor(m => m.Fax)
+
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style="width:21%" class="FormCaptionLeft">Email</td>
+                                                        <td style="width:28.5%" class="FormTableContainer">
+                                                            @Html.TextBoxFor(m => m.Email, new { @class = "InputBoxes", @maxlength = "50", @dosbox = "true", data_ng_model = "selectedObject.Email" })
+                                                            @Html.ValidationMessageFor(m => m.Email)
+
+                                                        </td>
+                                                        <td style="width:21%" class="FormCaptionLeft">
+                                                            <span class="requiredCaption">Addressee</span>
+                                                            <span class="required">*</span>
+                                                        </td>
+                                                        <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                            @Html.TextBoxFor(m => m.Addressee, new { @class = "InputBoxes", @maxlength = "25", @dosbox = "true", data_ng_model = "selectedObject.Addressee" })
+                                                            @Html.ValidationMessageFor(m => m.Addressee)
+
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                    
+                                                    <tr>
+                                                        <td style="width:21%" class="FormCaptionLeft">
+                                                            <span class="requiredCaption">Account Title</span>
+                                                            <span class="required">*</span>
+                                                        </td>
+                                                        <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                            @Html.TextBoxFor(m => m.AccountTitle, new { @class = "InputBoxes", @maxlength = "50", @dosbox = "true", data_ng_model = "selectedObject.AccountTitle" })
+                                                            @Html.ValidationMessageFor(m => m.AccountTitle)
+
+                                                        </td>
+                                                        <td style="width:21%" class="FormCaptionLeft">
+                                                            <span class="requiredCaption">Account Type</span>
+                                                            <span class="required">*</span>
+                                                        </td>
+                                                        <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                            @Html.TextBoxFor(m => m.AccountType, new { @class = "InputBoxes", @maxlength = "50", @dosbox = "true", data_ng_model = "selectedObject.AccountType" })
+                                                            @Html.ValidationMessageFor(m => m.AccountType)
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="width:21%" class="FormCaptionLeft">
+                                                            <span class="requiredCaption">Account #</span>
+                                                            <span class="required">*</span>
+                                                        </td>
+                                                        <td nowrap="nowrap" style="width:78%" colspan="3" class="FormTableContainer">
+                                                            @Html.TextBoxFor(m => m.AccountNo, new { @class = "InputBoxes", @maxlength = "25", @dosbox = "true", data_ng_model = "selectedObject.AccountNo" })
+                                                            @Html.ValidationMessageFor(m => m.AccountNo)
+
+                                                        </td>
+                                                    </tr>
+                                                    
+
+                                                </table>
+                                            }
+                                        </td>
+                                    </tr>
+
+                                    <tr class="TableHeader">
+                                        <td align="right" style="padding-right:5px;">
+                                            <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                                                   dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                                            <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode"
+                                                   dosbox="true" class="Buttons" />
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div ng-show="saveError">
+                                                <div style="color:green">
+                                                    {{ saveError }}
+                                                </div>
+                                            </div>
+                                            <div ng-show="listError">
+                                                <div style="color:red">
+                                                    {{ listError }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    @*</div>*@
+</div>

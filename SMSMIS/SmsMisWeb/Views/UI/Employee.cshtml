@@ -1,0 +1,409 @@
+﻿@model  SmsMis.Models.Console.Client.Employee
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Manage Employee";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/EmployeeModule.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+<br />
+<form ng-app="clientModule" ng-controller="employeeController"
+      name="myForm" novalidate>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            jQuery(".content").show();
+            //toggle the componenet with class msg_body
+            jQuery(".heading").click(function () {
+                jQuery(this).next(".content").slideToggle();
+                if (jQuery(this).find('img').attr('src').indexOf("expand") > 0)
+                    jQuery(this).find('img').attr("src", "../images/collapse.png");
+                else
+                    jQuery(this).find('img').attr("src", "../images/expand.png");
+            });
+        });
+    </script>
+    <div id="dvListing" style="height: 520px">
+        <div id="dvSearch">
+            <table border="0">
+                <tr>
+                    <td><input type="search" placeholder="Search Employee" ng-model="search.EmployeeName" /></td>
+                    <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" class="Buttons" /></td>
+                </tr>
+            </table>
+        </div>
+        <div style="width:inherit;height:490px; overflow-y:auto;"><table border="0" class="listing">
+            <thead>
+                <tr>
+                    <th>Employee</th>
+                </tr>
+            </thead>
+            <tr ng-repeat="obj in listData | filter: search" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)" ng-show="selectedObject.CompanyCode">
+                <td>{{obj.EmployeeName}}</td>
+            </tr>
+        </table>
+        </div>
+        <span ng-hide="listData">@*Loading, please wait...*@</span>
+    </div>
+
+    @using (Html.BeginForm("Employee", "Client", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        <div id="dvFormContainer" class="DetailPage">
+            <table style="width: 470px">
+                <tr>
+                    <td colspan="2" class="TableHeader">Employee</td>
+                </tr>
+
+                <tr id="trCompanyInfo">
+                    <td colspan="2">
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="width: 150px;" class="FormCaptionLeft">Company<span class="required">*</span></td>
+                                <td style="width: 300px;" class="FormTableContainer">
+                                    <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" class="ComboBoxesFlexible"  dosbox="true" ng-change="CompanyCode_Change()">
+                                        <option value=""></option>
+                                    </select>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="heading">
+                    <td colspan="2" class="TableSubHeader">Personal Info <div style="float: right"><img src="~/images/collapse.png" /></div></td>
+                </tr>
+                <tr id="trCompanyInfo" class="content">
+                    <td colspan="2">
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="width: 150px;" class="FormCaptionLeft">Employee Name<span class="required">*</span></td>
+                                <td style="width: 300px;" class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.EmployeeName, new { @class = "InputBoxes", @dosbox = "true",maxlength = "100", data_ng_model = "selectedObject.EmployeeName" })
+                                    @Html.ValidationMessageFor(m => m.EmployeeName)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="FormCaptionLeft">Gender<span class="required">*</span></td>
+                                <td class="FormTableContainer">
+                                    <select ng-model="selectedObject.Gender" class="ComboBoxesFlexible">
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                    </select>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 150px;" class="FormCaptionLeft">Father Name <span class="required">*</span></td>
+                                <td style="width: 300px;" class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.FatherName, new { @class = "InputBoxes", @dosbox = "true", maxlength = "100", data_ng_model = "selectedObject.FatherName" })
+                                    @Html.ValidationMessageFor(m => m.FatherName)
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="FormCaptionLeft">Marital Status<span class="required">*</span></td>
+                                <td class="FormTableContainer">
+                                    <select ng-model="selectedObject.MaritalStatus" class="ComboBoxesFlexible">
+                                        <option>Married</option>
+                                        <option>Unmarried</option>
+                                    </select>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 150px;" class="FormCaptionLeft">Husband Name</td>
+                                <td style="width: 300px;" class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.HusbandName, new { @class = "InputBoxes", @dosbox = "true", maxlength = "100", data_ng_model = "selectedObject.HusbandName" })
+                                    @Html.ValidationMessageFor(m => m.HusbandName)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="FormCaptionLeft">Date of Birth<span class="required">*</span></td>
+                                <td class="FormTableContainer">
+                                    @*<input type="date" ng-model="selectedObject.DateOfBirth">*@
+                                    @*{{ selectedObject.DateOfBirth | date: 'dd/MM/yyyy' }}*@
+                                    <input type="text" id="DateOfBirth" maxlength="10" name="DateOfBirth" ng-model="selectedObject.DateOfBirth" style="width:150px;" my-datepicker />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="FormCaptionLeft">Place of birth</td>
+                                <td class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.PlaceOfBirth, new { @Class = "InputBoxes", @dosbox = "true", maxlength = "100", data_ng_model = "selectedObject.PlaceOfBirth" })
+                                </td>
+                            </tr>
+                            <tr>
+
+                                            <td class="FormCaptionLeft" nowrap="nowrap">
+                                                <span class="requiredCaption">CNIC #</span>
+                                                <span class="required">*</span></td>
+                                            <td class="FormTableContainer">
+                                                @Html.TextBoxFor(m => m.CNIC, new { @class = "InputBoxes", @dosbox = "true", maxlength = "25", data_ng_model = "selectedObject.CNIC" })
+                                                @Html.ValidationMessageFor(m => m.CNIC)
+                                            </td>
+                                            
+                                        </tr>
+<tr>
+    <td class="FormCaptionLeft">Validity Date<span class="required">*</span></td>
+    <td class="FormTableContainer">
+        @*{{ selectedObject.CNICValidityDate | date: 'dd/MM/yyyy' }}*@
+        <input type="text" id="CNICValidityDate" name="CNICValidityDate" ng-model="selectedObject.CNICValidityDate" style="width:150px;" my-datepicker />
+    </td>
+                            </tr>
+                            <tr>
+                                
+                                            <td class="FormCaptionLeft" nowrap="nowrap">Passport # </td>
+                                            <td class="FormTableContainer">
+                                                @Html.TextBoxFor(m => m.PassportNo, new { @class = "InputBoxes", @dosbox = "true", maxlength = "25", data_ng_model = "selectedObject.PassportNo" })
+                                                @Html.ValidationMessageFor(m => m.PassportNo)
+                                            </td>
+                                            
+                                        </tr>
+<tr>
+    <td class="FormCaptionLeft">Validity Date</td>
+    <td class="FormTableContainer">
+        @*{{ selectedObject.PassportValidityDate | date: 'dd/MM/yyyy' }}*@
+        <input type="text" id="PassportValidityDate" name="PassportValidityDate" ng-model="selectedObject.PassportValidityDate" style="width:150px;" my-datepicker />
+    </td>
+                            </tr>
+                            <tr>
+                                <td class="FormCaptionLeft">Identification Mark</td>
+                                <td class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.IdentificationMark, new { @Class = "InputBoxes", @dosbox = "true", maxlength = "50", data_ng_model = "selectedObject.IdentificationMark" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 150px;" class="FormCaptionLeft">Nationality<span class="required">*</span></td>
+                                <td style="width: 300px;" class="FormTableContainer">
+                                    <select id="companyCode" ng-model="selectedObject.NationalityCode" ng-options="obj.NationalityCode as obj.NationalityName for obj in listAllNationality" class="ComboBoxesFlexible" dosbox="true">
+                                        <option value=""></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 150px;" class="FormCaptionLeft">Religion<span class="required">*</span></td>
+                                <td style="width: 300px;" class="FormTableContainer">
+                                    <select id="companyCode" ng-model="selectedObject.ReligionCode" ng-options="obj.ReligionCode as obj.ReligionName for obj in listAllReligions" class="ComboBoxesFlexible" dosbox="true">
+                                        <option value=""></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="FormCaptionLeft">Cell #</td>
+                                <td class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.CellNo, new { @class = "InputBoxes", @dosbox = "true", maxlength = "25", data_ng_model = "selectedObject.CellNo" })
+                                    @Html.ValidationMessageFor(m => m.CellNo)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="FormCaptionLeft">Email </td>
+                                <td class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "InputBoxes", @dosbox = "true", maxlength = "50", data_ng_model = "selectedObject.Email" })
+                                    @Html.ValidationMessageFor(m => m.Email)
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr class="heading">
+                    <td colspan="2" class="TableSubHeader">Employee Medical Info <div style="float: right"><img src="~/images/collapse.png" /></div></td>
+                </tr>
+                <tr id="trMedicalInfo" class="content">
+                    <td colspan="2">
+                        <table style="width: 100%">
+                            <tr>
+                                <td style="width: 150px;" class="FormCaptionLeft">Blood Group</td>
+                                <td style="width: 300px;" class="FormTableContainer">
+                                    <select ng-model="selectedObject.BloodGroup" class="ComboBoxesFlexible">
+                                        <option>A+</option>
+                                        <option>B+</option>
+                                        <option>A-</option>
+                                        <option>B-</option>
+                                        <option>O+</option>
+                                        <option>O-</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="FormCaptionLeft">
+                                    Disability Detail
+                                </td>
+                                <td class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.DisabilityDetail, new { @Class = "InputBoxes", @dosbox = "true", maxlength = "255", data_ng_model = "selectedObject.DisabilityDetail" })
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr class="heading">
+                    <td colspan="2" class="TableSubHeader">Present Contact Info<div style="float:right;"><img src="~/images/collapse.png" /></div></td>
+                </tr>
+                <tr id="trEmployeeClassSubject" class="content">
+                    <td colspan="2">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="FormCaptionLeft">Address </td>
+                                <td class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.PresentAddress, new { @class = "InputBoxes", @dosbox = "true", maxlength = "255", data_ng_model = "selectedObject.PresentAddress" })
+                                    @Html.ValidationMessageFor(m => m.PresentAddress)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="FormCaptionLeft">Police Station </td>
+                                <td class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.PresentAddressPoliceStation, new { @class = "InputBoxes", @dosbox = "true", maxlength = "100", data_ng_model = "selectedObject.PresentAddressPoliceStation" })
+                                    @Html.ValidationMessageFor(m => m.PresentAddressPoliceStation)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="FormCaptionLeft">Phone # </td>
+                                <td class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.PresentAddressPhoneNo, new { @class = "InputBoxes", @dosbox = "true", maxlength = "25", data_ng_model = "selectedObject.PresentAddressPhoneNo" })
+                                    @Html.ValidationMessageFor(m => m.PresentAddressPhoneNo)
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr class="heading">
+                    <td colspan="2" class="TableSubHeader">Permanent Contact Info<div style="float:right;"><img src="~/images/collapse.png" /></div></td>
+                </tr>
+                <tr id="trEmployeeClassSubject" class="content">
+                    <td colspan="2">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="FormCaptionLeft">Address </td>
+                                <td class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.PermanentAddress, new { @class = "InputBoxes", @dosbox = "true", maxlength = "255", data_ng_model = "selectedObject.PermanentAddress" })
+                                    @Html.ValidationMessageFor(m => m.PermanentAddress)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="FormCaptionLeft">Police Station </td>
+                                <td class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.PermanentAddressPoliceStation, new { @class = "InputBoxes", @dosbox = "true", maxlength = "100", data_ng_model = "selectedObject.PermanentAddressPoliceStation" })
+                                    @Html.ValidationMessageFor(m => m.PermanentAddressPoliceStation)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="FormCaptionLeft">Phone # </td>
+                                <td class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.PermanentAddressPhoneNo, new { @class = "InputBoxes", @dosbox = "true", maxlength = "25", data_ng_model = "selectedObject.PermanentAddressPhoneNo" })
+                                    @Html.ValidationMessageFor(m => m.PermanentAddressPhoneNo)
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr class="heading">
+                    <td colspan="2" class="TableSubHeader">Postal Contact Info<div style="float:right;"><img src="~/images/collapse.png" /></div></td>
+                </tr>
+                <tr id="trEmployeeClassSubject" class="content">
+                    <td colspan="2">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="FormCaptionLeft">Address </td>
+                                <td class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.PostalAddress, new { @class = "InputBoxes", @dosbox = "true", maxlength = "255", data_ng_model = "selectedObject.PostalAddress" })
+                                    @Html.ValidationMessageFor(m => m.PostalAddress)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="FormCaptionLeft">Police Station </td>
+                                <td class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.PostalAddressPoliceStation, new { @class = "InputBoxes", @dosbox = "true", maxlength = "100", data_ng_model = "selectedObject.PostalAddressPoliceStation" })
+                                    @Html.ValidationMessageFor(m => m.PostalAddressPoliceStation)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="FormCaptionLeft">Phone # </td>
+                                <td class="FormTableContainer">
+                                    @Html.TextBoxFor(m => m.PostalAddressPhoneNo, new { @class = "InputBoxes", @dosbox = "true", maxlength = "25", data_ng_model = "selectedObject.PostalAddressPhoneNo" })
+                                    @Html.ValidationMessageFor(m => m.PostalAddressPhoneNo)
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="heading">
+                    <td colspan="2" class="TableSubHeader">Employee Photo<div style="float:right;"><img src="~/images/collapse.png" /></div></td>
+                </tr>
+                <tr id="trEmployeePhoto" class="content">
+                    <td colspan="2">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="FormCaptionLeft">Employee Photo</td>
+                                <td colspan="3" class="FormTableContainer">
+                                    <input type="file" ng-model="dummy.images" accept="image/*" file-model style="width: 100%" />
+                                </td>
+                            </tr>
+                            <tr>
+                                @*ng-show="selectedObject.EmployeePhotoPath"*@
+                                <td valign="top" colspan="4" >
+                                    <img ng-show="dummy.images != ''" ng-src="{{dummy.images}}" width="100" height="130" />
+                                    <img ng-show="dummy.images == '' && selectedObject.EmployeePhotoPath != undefined && selectedObject.EmployeePhotoPath!= '' " ng-src="~/{{selectedObject.EmployeePhotoPath}}/{{selectedObject.CompanyCode}}_{{selectedObject.EmployeeCode}}.png" width="100" height="130" />
+                                    <img ng-show="dummy.images == '' && (selectedObject.EmployeePhotoPath == undefined || selectedObject.EmployeePhotoPath == '')" src="~/images/blank.png" width="11" height="11" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr class="heading">
+                    <td colspan="2" class="TableSubHeader">Employee Signature<div style="float:right;"><img src="~/images/collapse.png" /></div></td>
+                </tr>
+                <tr id="trEmployeeSignature" class="content">
+                    <td colspan="2">
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="FormCaptionLeft">Employee Signature</td>
+                                <td colspan="3" class="FormTableContainer">
+                                    <input type="file" ng-model="dummy.Signature" accept="image/*" file-model style="width: 100%" />
+                                </td>
+                            </tr>
+                            <tr>
+                                @*ng-show="selectedObject.EmployeeSignaturePath"*@
+                                <td valign="top" colspan="4" >
+                                    <img ng-show="dummy.Signature != ''" ng-src="{{dummy.Signature}}" width="100" height="130" />
+                                    <img ng-show="dummy.Signature == '' && selectedObject.EmployeeSignaturePath != undefined && selectedObject.EmployeeSignaturePath!= '' " ng-src="~/{{selectedObject.EmployeeSignaturePath}}/{{selectedObject.CompanyCode}}_{{selectedObject.EmployeeCode}}.png" width="100" height="130" />
+                                    <img ng-show="dummy.Signature == '' && (selectedObject.EmployeeSignaturePath == undefined || selectedObject.EmployeeSignaturePath == '')" src="~/images/blank.png" width="11" height="11" />
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td style="width: 150px;"></td>
+                    <td style="width: 300px;">
+                        <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                               dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                        <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode"
+                               dosbox="true" class="Buttons" />
+                        <div ng-show="saveError">
+                            <div style="color:green"> {{ saveError }}</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div ng-show="listError">
+            <div style="color:red">
+                {{ listError }}
+            </div>
+        </div>
+        @*</div>*@
+    }
+</form>

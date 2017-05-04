@@ -1,0 +1,42 @@
+﻿@model SmsMis.Models.Console.Admin.User
+@{
+    ViewBag.Title = "Admin Login";
+    Layout = "~/Views/Shared/_LoginLayouts.cshtml";
+}
+<section id="loginForm">
+    @using (Html.BeginForm("Index", "UI", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <table border="0" class="loginBox">
+            <tr>
+                <td colspan="2" class="tableTitle">@ViewBag.PageTitle</td>
+            </tr>
+            <tr>
+                <td class="captionCell">@Html.LabelFor(m => m.CompanyUserLoginId)</td>
+                <td class="inputCell">
+                    @Html.TextBoxFor(m => m.CompanyUserLoginId, new { @class = "form-control", @dosbox = "true" })
+                    @Html.ValidationMessageFor(m => m.CompanyUserLoginId)
+                </td>
+            </tr>
+            <tr>
+                <td class="captionCell">@Html.LabelFor(m => m.Password)</td>
+                <td class="inputCell">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @dosbox = "true" })
+                    @Html.ValidationMessageFor(m => m.Password)
+                </td>
+            </tr>
+            <tr>
+                <td class="captionCell">&nbsp;</td>
+                <td class="inputCell"><input type="submit" id="btnSumbit" value="Log in" class="btn btn-default" dosbox="true" /></td>
+            </tr>
+            <tr>
+                <td class="inputCellEmpty error-text" colspan="2">@ViewBag.errorMsg</td>
+            </tr>
+        </table>
+    }
+</section>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

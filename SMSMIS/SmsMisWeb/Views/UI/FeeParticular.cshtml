@@ -1,0 +1,166 @@
+﻿@model  SmsMis.Models.Console.Admin.FeeParticular
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Manage FeeParticular";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/FeeParticularModule.js"></script>
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+
+
+<form ng-app="adminModule1" ng-controller="feeparticularController"
+      name="myForm" novalidate>
+    @*<div ng-app="adminModule1" ng-controller="branchController">*@
+    <table style="width:100%">
+        <tr>
+            <td style="width:30%;vertical-align:top">
+                <div id="dvListing">
+                    <div id="dvSearch">
+                        <table border="0">
+                            <tr>
+                                <td><input type="search" placeholder="Search Fee Particular" ng-model="search.ParticularName" /></td>
+                                <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" /></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table border="0" class="listing">
+                        <thead >
+                            <tr>
+                                <th style="text-align:left">Particular</th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="obj in listData | filter: search" ng-class="{selected: (obj.CompanyCode == selectedObject.CompanyCode && obj.ParticularCode == selectedObject.ParticularCode)}" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)">
+                            <td>{{obj.ParticularName}}</td>
+                        </tr>
+                    </table>
+                    <span ng-hide="listData">@*Loading, please wait...*@</span>
+                </div>
+            </td>
+            <td style="width:70%;">
+                <div id="dvFormContainer" class="DetailPage">
+                    <table style="width: 400px">
+                        <tr>
+                            <td>
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td class="TableHeader">
+                                            <span class="requiredCaption">Fee Particular</span>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table style="width: 100%" class="FormTable" cellspacing="1" cellpadding="2" border="0">
+
+                                                <tr>
+                                                    <td style="width: 50%;" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Company</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td style="width: 49%;" class="FormTableContainer">
+                                                        <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" ng-change="getCompanyData()" class="form-control" dosbox="true"></select>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 50%;" class="FormCaptionLeft">
+                                                        Particular
+                                                    </td>
+                                                    <td style="width: 49%;" class="FormTableContainer">
+                                                        <input id="ParticularName" type="text" maxlength="50" ng-model="selectedObject.ParticularName" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 50%;" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Recurring</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td style="width: 49%;" class="FormTableContainer">
+                                                        <select id="Recurring" ng-model="selectedObject.Recurring" ng-options="type.Recurring as type.Recurring for type in listFeeParticularRecurringType" class="form-control" dosbox="true">
+                                                            
+                                                        </select>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 50%;" class="FormCaptionLeft">First Fee Particular</td>
+                                                    <td style="width: 49%;" class="FormTableContainer">
+                                                        <input type="checkbox" ng-model="selectedObject.FirstFeeParticular" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 50%;" class="FormCaptionLeft">Regular Fee Particular</td>
+                                                    <td style="width: 49%;" class="FormTableContainer">
+                                                        <input type="checkbox" ng-model="selectedObject.RegularFeeParticular" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 50%;" class="FormCaptionLeft">Scholarship Allowed</td>
+                                                    <td style="width: 49%;" class="FormTableContainer">
+                                                        <input type="checkbox" ng-model="selectedObject.ScholarshipAllowed" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 50%;" class="FormCaptionLeft">Discount Allowed</td>
+                                                    <td style="width: 49%;" class="FormTableContainer">
+                                                        <input type="checkbox" ng-model="selectedObject.DiscountAllowed" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 50%;" class="FormCaptionLeft">Optional Particular </td>
+                                                    <td style="width: 49%;" class="FormTableContainer">
+                                                        <input type="checkbox" ng-model="selectedObject.Optional" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 50%;" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Status</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td style="width:49%" class="FormTableContainer">
+                                                        <select id="StatusCode" ng-model="selectedObject.Status" class="ComboBoxesFlexible" ng-disabled="!selectedObject.CompanyCode" dosbox="true">
+                                                            <option value="1">Active</option>
+                                                            <option value="0">In-Active</option>
+
+                                                        </select>
+
+                                                    </td>
+                                                </tr>
+                                    
+                                </table>
+                                            </td></tr>
+<tr class="TableHeader">
+                                                    
+    <td align="right" style="padding-right:5px;">
+        <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+               class="btn btn-default" dosbox="true"  />
+        <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode"
+               class="btn btn-default" dosbox="true" />
+        <div ng-show="saveError">
+            <div style="color:green"> {{ saveError }}</div>
+        </div>
+
+    </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div ng-show="listError">
+                    <div style="color:red">
+                        {{ listError }}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    @*</div>*@
+</form>

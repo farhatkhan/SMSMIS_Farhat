@@ -1,0 +1,186 @@
+﻿@model  SmsMis.Models.Console.Client.COAGroup
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "Manage Branch";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/COAGroupModule.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+    .selected {
+    background-color:lightgray !important;
+}
+</style>
+
+
+<form ng-app="clientModule1" ng-controller="COAGroupController"
+      name="myForm" novalidate>
+    
+    <div id="dvFormContainer" class="DetailPage">
+        <table>
+            <tr>
+                <td>
+                    <table style="width: 570px">
+                        <tr>
+                            <td colspan="2" class="TableHeader">COA Group</td>
+                        </tr>
+                        <tr id="trCompanyInfo">
+                            <td colspan="2">
+                                <table style="width: 100%" class="FormTable" cellspacing="1" cellpadding="2" border="0">
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Company</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" class="ComboBoxesFlexible" ng-change="getCOACompanyWise()" dosbox="true"></select>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Code</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <input id="Text2" type="text" ng-model="selectedObject.Code" numbers-only maxlength="7" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Description</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <input id="Text2" type="text" ng-model="selectedObject.Description" maxlength="50" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Short Name</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <input id="Text2" type="text" ng-model="selectedObject.ShortName" maxlength="10" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormTableContainer">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            All Accounts
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+
+
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            Selected Accounts
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 100%;" colspan="2">
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <td style="width: 48%;" class="FormTableContainer">
+                                                        <div style="height:200px;overflow:auto">
+                                                            <table style="width: 100%;" class="FormTable" border="1" cellpadding="0" cellspacing="0">
+                                                                <tr ng-repeat="obj in listCOA" ng-class="{selected :obj.AccountCode == selectedRow}" style="cursor:pointer;" ng-click="setLeftSelected(obj)">
+                                                                    <td>{{obj.AccountCode}} - {{obj.AccountTitle}}</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                                    <td style="width:4%" class="FormTableContainer">
+                                                        <div style="height:20px; background-color:white;cursor:pointer" ng-click="moveLeft()">
+                                                            <<
+                                                        </div>
+                                                        <div style="height:20px"></div>
+                                                        <div style="height:20px;background-color:white;cursor:pointer" ng-click="moveRight()">
+                                                            >>
+                                                        </div>
+                                                    </td>
+                                                    <td style="width: 48%;" class="FormTableContainer">
+                                                        <div style="height:200px;overflow:auto">
+                                                            <table style="width:100%;" class="FormTable" border="1" cellpadding="0" cellspacing="0">
+                                                                <tr ng-repeat="obj in listData" ng-class="{selected :obj.AccountCode == selectedRow}" style="cursor:pointer;" ng-click="setRightSelected(obj)">
+                                                                    <td>{{obj.AccountCode}} - {{obj.AccountTitle}}</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr class="TableHeader">
+                            <td align="right" style="padding-right:5px;">
+                                <input type="submit" id="btnSumbit" value="Save" ng-click="save();" dosbox="true" class="Buttons" />
+                                <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode"
+                                       dosbox="true" class="Buttons" />
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div ng-show="saveError">
+                                    <div style="color:green">
+                                        {{ saveError }}
+                                    </div>
+                                </div>
+                                <div ng-show="listError">
+                                    <div style="color:red">
+                                        {{ listError }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function hideQuickSearchResults() {
+            setTimeout(function () { $('.QuickSearchResults').hide(); }, 200);
+        }
+        function hideQuickSearchResults1() {
+            setTimeout(function () { $('.ueQuickSearchResults').hide(); }, 200);
+        }
+        $('.QuickSearchResults').hide();
+        $('.ueQuickSearchResults').hide();
+        $(document).on('keydown', ':focusable', function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                // Get all focusable elements on the page
+                var $canfocus = $(':focusable');
+
+                var index = $canfocus.index(this) + 1;
+                if (index >= $canfocus.length) index = 0;
+
+                $canfocus.eq(index).focus().select();
+            }
+        });
+    </script>
+</form>

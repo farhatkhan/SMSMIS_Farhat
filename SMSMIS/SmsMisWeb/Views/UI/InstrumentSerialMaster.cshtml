@@ -1,0 +1,184 @@
+﻿@model  SmsMis.Models.Console.Client.InstrumentSerialMaster
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "Bank";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/InstrumentSerialModule.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+}
+<script>
+    showShield();
+</script>
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+
+<div ng-app="clientModule1" ng-controller="InstrumentSerialController">
+    @*<div ng-app="adminModule1" ng-controller="AdmissionInquiryController">*@
+
+    <table style="width:100%">
+        <tr>
+            <td style="width:30%;vertical-align:top">
+                <div id="dvListing">
+                    <div id="dvSearch">
+                        <table border="0">
+                            <tr>
+                                <td><input type="search" placeholder="Search Company" ng-model="search.AccountCode" /></td>
+                                <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" class="Buttons" /></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table border="0" class="listing">
+                        <thead>
+                            <tr>
+                                <th>Instrument Serial</th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="obj in filterList " class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)">
+                            <td>{{obj.AccountCode }}</td>
+                        </tr>
+                    </table>
+                    <span ng-hide="listData">@*Loading, please wait...*@</span>
+                </div>
+            </td>
+            <td style="width:70%;">
+                <div id="dvFormContainer" class="DetailPage">
+
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td class="TableHeader">
+                                            <span class="requiredCaption">Manage Instrument Serial</span>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr id="trCompanyInfo">
+                                        <td>
+                                            <table style="width: 100%" class="FormTable" cellspacing="1" cellpadding="2" border="0">
+                                                <tr>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Company </span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" class="ComboBoxesFlexible" ng-change="getCOACompanyWise()" dosbox="true"></select>
+                                                    </td>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Branch</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <select id="BranchCode" ng-model="selectedObject.BranchCode" ng-options="obj.BranchCode as obj.BranchName for obj in listBranch | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" ng-change="showCOA()" dosbox="true"></select>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Bank</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td style="width:28.5%" class="FormTableContainer">
+                                                        <select id="AccCode" ng-model="selectedObject.AccountCode" ng-options="obj.AccountCode as obj.AccountTitle for obj in listCOA | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible"  dosbox="true"></select>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Instrument Type</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td style="width:28.5%" class="FormTableContainer">
+                                                        <select id="IType" ng-model="selectedObject.InstrumentTypeCode" ng-options="obj.InstrumentCode as obj.InstrumentName for obj in listInstrumentType" class="ComboBoxesFlexible" ng-disabled="isEditMode" dosbox="true"></select>
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Starting Instrument #</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="txtStartingInstrumentNo" ng-model="selectedObject.StartingInstrumentNo" class="ComboBoxesFlexible numberinput" dosbox="true"></input>
+                                                    </td>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Ending Instrument #</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="txtEndingInstrumentNo" ng-model="selectedObject.EndingInstrumentNo" class="ComboBoxesFlexible numberinput" dosbox="true"></input>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Issue Date</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="aIssueDate" ng-model="selectedObject.IssueDate" my-datepicker class="ComboBoxesFlexible" dosbox="true"></input>
+                                                    </td>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Status</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <select id="cboStatus" ng-model="selectedObject.Status" dosbox="true">
+                                                            <option value="1">Active</option>
+                                                            <option value="0">In-Active</option>
+                                                        </select>
+
+                                                    </td>
+
+                                                </tr>
+
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="TableHeader">
+                                        <td align="right" style="padding-right:5px;">
+                                            <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                                                   dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                                            <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode"
+                                                   dosbox="true" class="Buttons" />
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div ng-show="saveError">
+                                                <div style="color:green">
+                                                    {{ saveError }}
+                                                </div>
+                                            </div>
+                                            <div ng-show="listError">
+                                                <div style="color:red">
+                                                    {{ listError }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    @*</div>*@
+</div>
+<script type="text/javascript">
+    $(".numberinput").keypress(function (e) {
+        //if the letter is not digit then display error and don't type anything
+        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+            return false;
+        }
+
+    });
+
+</script>

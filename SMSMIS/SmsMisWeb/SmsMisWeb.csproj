@@ -1,0 +1,500 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{233A6BEA-E99A-42A4-905F-DC0D5C8B43F5}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmsMisWeb</RootNamespace>
+    <AssemblyName>SmsMisWeb</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.Extended">
+      <HintPath>..\packages\EntityFramework.Extended.6.1.0.95\lib\net45\EntityFramework.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="MvcCheckBoxList">
+      <HintPath>..\packages\MvcCheckBoxList.1.4.4.5\lib\net45\MvcCheckBoxList.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="TrackableEntities.Common">
+      <HintPath>..\packages\TrackableEntities.Common.2.1.0.0\lib\portable-net40+sl5+win8+windowsphone8\TrackableEntities.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="TrackableEntities.EF.6">
+      <HintPath>..\packages\TrackableEntities.EF.6.2.1.0.0\lib\net45\TrackableEntities.EF.6.dll</HintPath>
+    </Reference>
+    <Reference Include="TrackerEnabledDbContext">
+      <HintPath>..\packages\TrackerEnabledDbContext.2.0.0\lib\net451\TrackerEnabledDbContext.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.0\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.0\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.0\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\UIController.AnalysisType.cs" />
+    <Compile Include="Controllers\UIController.CostCenter.cs" />
+    <Compile Include="Controllers\UIController.CSMaster.cs" />
+    <Compile Include="Controllers\UIController.FeeReceipt.cs" />
+    <Compile Include="Controllers\UIController.cs" />
+    <Compile Include="Controllers\UIController.Company.cs" />
+    <Compile Include="Controllers\UIController.Employee.cs" />
+    <Compile Include="Controllers\UIController.Party.cs" />
+    <Compile Include="Controllers\UIController.Project.cs" />
+    <Compile Include="Controllers\UIController.StudentAdmission.cs" />
+    <Compile Include="Controllers\UIController.StudentFixedDiscount.cs" />
+    <Compile Include="Controllers\UIController.StudentFixedDiscountType.cs" />
+    <Compile Include="Controllers\UIController.VoucherType.cs" />
+    <Compile Include="Controllers\UIController.InstrumentSerial.cs" />
+    <Compile Include="Controllers\UIController.InstrumentType.cs" />
+    <Compile Include="Controllers\UIController.VoucherMaster.cs" />
+    <Compile Include="Controllers\UIController.COALevels.cs" />
+    <Compile Include="Controllers\UIController.StudentOptionalFeeParticular.cs" />
+    <Compile Include="Controllers\UIController.SubjectPracticleFee.cs" />
+    <Compile Include="Controllers\UIController.FeeBillMaster.cs" />
+    <Compile Include="Controllers\UIController.Currency.cs" />
+    <Compile Include="Controllers\UIController.Prefrences.cs" />
+    <Compile Include="Controllers\UIController.BranchBuilding.cs" />
+    <Compile Include="Controllers\UIController.Category.cs" />
+    <Compile Include="Controllers\UIController.Department.cs" />
+    <Compile Include="Controllers\UIController.Designation.cs" />
+    <Compile Include="Controllers\UIController.DocType.cs" />
+    <Compile Include="Controllers\UIController.Grade.cs" />
+    <Compile Include="Controllers\UIController.Nationality.cs" />
+    <Compile Include="Controllers\UIController.Type.cs" />
+    <Compile Include="Controllers\Common.cs" />
+    <Compile Include="Controllers\UIController.VoucherTypeBranch.cs" />
+    <Compile Include="Filters\CutomAttribute.cs" />
+    <Compile Include="Filters\DebugModelBinder.cs" />
+    <Compile Include="Report\dsFeeReport.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsFeeReport.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\FeeReports.aspx.cs">
+      <DependentUpon>FeeReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\FeeReports.aspx.designer.cs">
+      <DependentUpon>FeeReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="smsmisDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>smsmisDataSet.xsd</DependentUpon>
+    </Compile>
+    <Content Include="design\console.css" />
+    <Content Include="design\Default.css" />
+    <Content Include="design\TestCSS.css" />
+    <Content Include="Global.asax" />
+    <Content Include="images\actions\add.png" />
+    <Content Include="images\UI\background.png" />
+    <Content Include="images\UI\home-icon.png" />
+    <Content Include="images\UI\toolbar-bg.png" />
+    <Content Include="images\UI\toolbar-divider.png" />
+    <Content Include="images\UI\toolbar-dropdown-bg.png" />
+    <Content Include="images\UI\toolbar-dropdown-bot.png" />
+    <Content Include="images\UI\toolbar-dropdown-left-bot.png" />
+    <Content Include="images\UI\toolbar-dropdown-right-bot.png" />
+    <Content Include="images\UI\toolbar-left.png" />
+    <Content Include="images\UI\toolbar-right.png" />
+    <Content Include="images\UI\toolbar-selected-bg.png" />
+    <Content Include="images\collapse.png" />
+    <Content Include="images\delete_entry.gif" />
+    <Content Include="images\close.gif" />
+    <Content Include="images\expand.png" />
+    <Content Include="images\iframe_shield.gif" />
+    <Content Include="images\picture_not_avaialbe.gif" />
+    <Content Include="ng-Scripts\BankModule.js" />
+    <Content Include="ng-Scripts\BankPopupModule.js" />
+    <Content Include="ng-Scripts\BranchVoucherType.js" />
+    <Content Include="ng-Scripts\ChartOfAccountsModule.js" />
+    <Content Include="ng-Scripts\COAGroupModule.js" />
+    <Content Include="ng-Scripts\CSMasterModule.js" />
+    <Content Include="ng-Scripts\CurrencyModule.js" />
+    <Content Include="ng-Scripts\FeeBillMasterModule.js" />
+    <Content Include="ng-Scripts\FeeBillPaymentTermsModule.js" />
+    <Content Include="ng-Scripts\FeeParticularRate.js" />
+    <Content Include="ng-Scripts\FeeReceiptModule.js" />
+    <Content Include="ng-Scripts\FeeTermModule.js" />
+    <Content Include="ng-Scripts\GenerateFeeBillModule.js" />
+    <Content Include="ng-Scripts\InstrumentSerialModule.js" />
+    <Content Include="ng-Scripts\InstrumentTypeModule.js" />
+    <Content Include="ng-Scripts\OrderBy.js" />
+    <Content Include="ng-Scripts\StudentBillingCycleModule.js" />
+    <Content Include="ng-Scripts\StudentFeeTermScholarshipModule.js" />
+    <Content Include="ng-Scripts\StudentFixedDiscountModule.js" />
+    <Content Include="ng-Scripts\StudentFixedDiscountTypeModule.js" />
+    <Content Include="ng-Scripts\StudentFixedScholarshipModule.js" />
+    <Content Include="ng-Scripts\EmployeeModule.js" />
+    <Content Include="ng-Scripts\StudentAdmissionModule.js" />
+    <Content Include="ng-Scripts\StudentModule.js" />
+    <Content Include="ng-Scripts\TestJS.js" />
+    <Content Include="ng-Scripts\VoucherMasterModule.js" />
+    <Content Include="ng-Scripts\VoucherTypeModule.js" />
+    <Content Include="ng-Scripts\BranchBuildingModule.js" />
+    <Content Include="ng-Scripts\CategoryModule.js" />
+    <Content Include="ng-Scripts\ClassListWithSnapModule.js" />
+    <Content Include="ng-Scripts\rptParamSubjectCombinationFormModule.js" />
+    <Content Include="ng-Scripts\rptParamClassListModule.js" />
+    <Content Include="ng-Scripts\rptParamApplicationListModule.js" />
+    <Content Include="ng-Scripts\rptParamApplicationFormModule.js" />
+    <Content Include="ng-Scripts\DepartmentModule.js" />
+    <Content Include="ng-Scripts\DesignationModule.js" />
+    <Content Include="ng-Scripts\DocTypeModule.js" />
+    <Content Include="ng-Scripts\FeeParticularModule.js" />
+    <Content Include="ng-Scripts\ClassCourseSubjectModule.js" />
+    <Content Include="ng-Scripts\GradeModule.js" />
+    <Content Include="ng-Scripts\NationalityModule.js" />
+    <Content Include="ng-Scripts\ReportModule.js" />
+    <Content Include="ng-Scripts\HouseModule.js" />
+    <Content Include="ng-Scripts\SeatTypeModule.js" />
+    <Content Include="ng-Scripts\SectionModule.js" />
+    <Content Include="ng-Scripts\CourseModule.js" />
+    <Content Include="ng-Scripts\ClassModule.js" />
+    <Content Include="ng-Scripts\CompanySessionModule.js" />
+    <Content Include="ng-Scripts\ReligionModule.js" />
+    <Content Include="ng-Scripts\MarketingReferenceModule.js" />
+    <Content Include="ng-Scripts\StudentOptionalFeeParticularModule.js" />
+    <Content Include="ng-Scripts\SubjectModule.js" />
+    <Content Include="ng-Scripts\BranchSessionModule.js" />
+    <Content Include="ng-Scripts\BranchModule.js" />
+    <Content Include="ng-Scripts\CompanyModule.js" />
+    <Content Include="ng-Scripts\DepartmentsModule.js" />
+    <Content Include="ng-Scripts\SubjectPracticleFeeModule.js" />
+    <Content Include="ng-Scripts\TypeModule.js" />
+    <Content Include="ng-Scripts\UserTypesModule.js" />
+    <Content Include="ng-Scripts\RegionModule.js" />
+    <Content Include="Report\FeeReports.aspx" />
+    <Content Include="Resources\_ngCommons.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Resources\ConsoleUI.js" />
+    <Content Include="Resources\ControlsCommon.js" />
+    <Content Include="Report\dsReport.xsc">
+      <DependentUpon>dsReport.xsd</DependentUpon>
+    </Content>
+    <Compile Include="Common\GlobalConstants.cs" />
+    <Compile Include="Controllers\UIController.Bank.cs" />
+    <Compile Include="Controllers\UIController.ChartOfAccounts.cs" />
+    <Compile Include="Controllers\UIController.FeeBillPaymentTerms.cs" />
+    <Compile Include="Controllers\UIController.FeeParticularRate.cs" />
+    <Compile Include="Controllers\UIController.FeeTerm.cs" />
+    <Compile Include="Controllers\UIController.StudentBillingCycle.cs" />
+    <Compile Include="Controllers\UIController.StudentFeeTermScholarship.cs" />
+    <Compile Include="Controllers\UIController.StudentFixedScholarship.cs" />
+    <Compile Include="Controllers\UIController.StudentKinship.cs" />
+    <Compile Include="Controllers\UIController.Student.cs" />
+    <Content Include="Report\dsFeeReport.xsc">
+      <DependentUpon>dsFeeReport.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\dsFeeReport.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsFeeReport.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Report\dsFeeReport.xss">
+      <DependentUpon>dsFeeReport.xsd</DependentUpon>
+    </Content>
+    <None Include="Report\dsReport.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dsReport.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Report\dsReport.xss">
+      <DependentUpon>dsReport.xsd</DependentUpon>
+    </Content>
+    <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.1.js" />
+    <Content Include="Scripts\jquery-2.1.1.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui.css" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <None Include="Scripts\_references.js" />
+    <Content Include="Report\CommonrdlcReport.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\UIController.FeeParticular.cs" />
+    <Compile Include="Controllers\UIController.MarketingReference.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\UIController.House.cs" />
+    <Compile Include="Controllers\UIController.SeatType.cs" />
+    <Compile Include="Controllers\UIController.ClassCourseSubject.cs" />
+    <Compile Include="Controllers\UIController.Section.cs" />
+    <Compile Include="Controllers\UIController.Course.cs" />
+    <Compile Include="Controllers\UIController.Class.cs" />
+    <Compile Include="Controllers\UIController.Religion.cs" />
+    <Compile Include="Controllers\UIController.Subject.cs" />
+    <Compile Include="Controllers\UIController.BranchSession.cs" />
+    <Compile Include="Controllers\UIController.CompanySession.cs" />
+    <Compile Include="Controllers\UIController.Branch.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\dsReport.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dsReport.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Report\CommonrdlcReport.aspx.cs">
+      <DependentUpon>CommonrdlcReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\CommonrdlcReport.aspx.designer.cs">
+      <DependentUpon>CommonrdlcReport.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config" />
+    <Content Include="packages.config" />
+    <Content Include="Views\Shared\_LoginLayouts.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Scripts\jquery-2.1.1.min.map" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\Report\Report.cshtml" />
+    <Content Include="Views\Shared\_UserLayout.cshtml" />
+    <Content Include="smsmisDataSet.xsc">
+      <DependentUpon>smsmisDataSet.xsd</DependentUpon>
+    </Content>
+    <None Include="smsmisDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>smsmisDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="smsmisDataSet.xss">
+      <DependentUpon>smsmisDataSet.xsd</DependentUpon>
+    </Content>
+    <Content Include="Views\Report\rptParamApplicationForm.cshtml" />
+    <Content Include="Views\Report\rptParamApplicationList.cshtml" />
+    <Content Include="Views\Report\rptParamClassList.cshtml" />
+    <Content Include="Views\Report\rptParamSubjectCombinationForm.cshtml" />
+    <Content Include="Views\UI\Company.cshtml">
+      <SubType>
+      </SubType>
+    </Content>
+    <Content Include="Views\UI\Branch.cshtml" />
+    <Content Include="Views\UI\BranchBuilding.cshtml" />
+    <Content Include="Views\UI\BranchSession.cshtml" />
+    <Content Include="Views\UI\Category.cshtml" />
+    <Content Include="Views\UI\Class.cshtml" />
+    <Content Include="Views\UI\ClassCourseSubject.cshtml" />
+    <Content Include="Views\UI\CompanySession.cshtml" />
+    <Content Include="Views\UI\Course.cshtml" />
+    <Content Include="Views\UI\Department.cshtml" />
+    <Content Include="Views\UI\Designation.cshtml" />
+    <Content Include="Views\UI\DocType.cshtml" />
+    <Content Include="Views\UI\FeeParticular.cshtml" />
+    <Content Include="Views\UI\Grade.cshtml" />
+    <Content Include="Views\UI\Home.cshtml" />
+    <Content Include="Views\UI\House.cshtml" />
+    <Content Include="Views\UI\Index.cshtml" />
+    <Content Include="Views\UI\MarketingReference.cshtml" />
+    <Content Include="Views\UI\Nationality.cshtml" />
+    <Content Include="Views\UI\Religion.cshtml" />
+    <Content Include="Views\UI\SeatType.cshtml" />
+    <Content Include="Views\UI\Section.cshtml" />
+    <Content Include="Views\UI\Student.cshtml" />
+    <Content Include="Views\UI\Subject.cshtml" />
+    <Content Include="Views\UI\Type.cshtml" />
+    <Content Include="Views\UI\Bank.cshtml" />
+    <Content Include="Views\UI\BranchVoucherType.cshtml" />
+    <Content Include="Views\UI\ChartOfAccounts.cshtml" />
+    <Content Include="Views\UI\ClassListWithSnap.cshtml" />
+    <Content Include="Views\UI\Currency.cshtml" />
+    <Content Include="Views\UI\Employee.cshtml" />
+    <Content Include="Views\UI\FeeBillMaster.cshtml" />
+    <Content Include="Views\UI\FeeBillPaymentTerms.cshtml" />
+    <Content Include="Views\UI\FeeParticularRate.cshtml" />
+    <Content Include="Views\UI\FeeTerm.cshtml" />
+    <Content Include="Views\UI\InstrumentSerial.cshtml" />
+    <Content Include="Views\UI\InstrumentType.cshtml" />
+    <Content Include="Views\UI\StudentAdmission.cshtml" />
+    <Content Include="Views\UI\StudentAdmissionData.cshtml" />
+    <Content Include="Views\UI\StudentBillingCycle.cshtml" />
+    <Content Include="Views\UI\StudentFeeTermScholarship.cshtml" />
+    <Content Include="Views\UI\StudentFixedScholarship.cshtml" />
+    <Content Include="Views\UI\StudentOptionalFeeParticular.cshtml" />
+    <Content Include="Views\UI\SubjectPracticleFee.cshtml" />
+    <Content Include="Views\UI\VoucherMaster.cshtml" />
+    <Content Include="Views\UI\VoucherType.cshtml" />
+    <Content Include="Views\UI\FeeReceipt.cshtml" />
+    <Content Include="Views\UI\GenerateFeeBill.cshtml" />
+    <Content Include="Views\UI\BankPopup.cshtml" />
+    <Content Include="Views\UI\StudentFixedDiscount.cshtml" />
+    <Content Include="Views\UI\StudentFixedDiscountType.cshtml" />
+    <Content Include="Views\UI\COAGroup.cshtml" />
+    <Content Include="Views\UI\CSMaster.cshtml" />
+    <Content Include="Views\UI\View.cshtml" />
+    <Content Include="Views\UI\Test.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
+    <Folder Include="Views\CostCenter\" />
+    <Folder Include="Views\Party\" />
+    <Folder Include="Views\UIEmployee\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Report\rptSubjectCombination.rdlc" />
+    <EmbeddedResource Include="Report\rptApplicationForm.rdlc" />
+    <EmbeddedResource Include="Report\rptApplicationList.rdlc" />
+    <EmbeddedResource Include="Report\rptClassList.rdlc" />
+    <EmbeddedResource Include="Report\rptFeeReceipt.rdlc" />
+    <EmbeddedResource Include="Report\rptIssuedChallan.rdlc" />
+    <EmbeddedResource Include="Report\rptStudentFeeBill.rdlc" />
+    <EmbeddedResource Include="Report\rptStudentReceipt.rdlc" />
+    <EmbeddedResource Include="Report\rptBranches.rdlc" />
+    <EmbeddedResource Include="Report\rptCompany.rdlc" />
+    <EmbeddedResource Include="Report\rptVoucherMaster.rdlc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SmsMis.Models.Console\SmsMis.Models.Console.csproj">
+      <Project>{68214f6f-3e0c-48fe-a2b3-6907091eba19}</Project>
+      <Name>SmsMis.Models.Console</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2287</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:2286/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

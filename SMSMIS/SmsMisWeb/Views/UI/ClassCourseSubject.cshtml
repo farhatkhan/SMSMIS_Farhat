@@ -1,0 +1,135 @@
+﻿@model  SmsMis.Models.Console.Handlers.Admin.Branch
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Manage Class Course";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/ClassCourseSubjectModule.js"></script>
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+@*<span class="pageTitle">Manage Class Course</span>
+<br />*@<br />
+<form ng-app="adminModule1" ng-controller="classcoursesubjectController"
+    name="myForm" novalidate>
+    <div id="dvFormContainer" class="DetailPage">
+        <table style="width: 600px">
+            <tr>
+                <td colspan="4" class="TableHeader">Manage Class Course</td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Company<span class="required">*</span></td>
+                <td class="FormTableContainer" colspan="3">
+                    <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="objCom.CompanyCode as objCom.CompanyName for objCom in listCompany" class="form-control" dosbox="true" ng-change="loadSessions()">
+                        <option value=""></option>
+
+                    </select>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Branch<span class="required">*</span></td>
+                <td class="FormTableContainer" colspan="3">
+                    <select id="branchCode" ng-model="selectedObject.BranchCode" ng-options="obj.BranchCode as obj.BranchName for obj in listBranch | filter:{CompanyCode: selectedObject.CompanyCode}" class="form-control" dosbox="true" ng-change="loadSessions()">
+                        <option value=""></option>
+                    </select>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Class<span class="required">*</span></td>
+                <td class="FormTableContainer" colspan="3">
+                    <select id="ClassCode" ng-model="selectedObject.ClassCode" ng-options="oClass.ClassCode as oClass.ClassName for oClass in listCompanyClass | filter: {CompanyCode: selectedObject.CompanyCode}" class="form-control" dosbox="true" ng-change="selectedObject.CourseCode=''">
+                        <option value=""></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Course<span class="required">*</span></td>
+                <td style="text-align: left;">
+                    <select id="CourseCode" ng-model="selectedObject.CourseCode" ng-options="oCourse.CourseCode as oCourse.CourseName for oCourse in listCompanyCourse | filter: {CompanyCode: selectedObject.CompanyCode}"  ng-change="loadSessions()"@*ng-change="Course_Change(selectedObject.CourseCode)"*@>
+                        <option value=""></option>
+
+                    </select>
+                </td>
+            </tr>
+            @*<tr>
+                <td colspan="4">
+                    <div style="float: right; padding-right:15px;">
+                        <input type="button" name="Add Course" value="Add Course" ng-click="addSubjectCourse()" ng-show="selectedObject.CompanyCode > 0 && selectedObject.BranchCode > 0&& selectedObject.ClassCode > 0" />
+                    </div>
+                </td>
+            </tr>*@
+            <tr>
+                <td colspan="4">
+                    <table class="tbl" style="border: solid 1px #808080; width: 98%" cellspacing="1" cellpadding="1">
+                        <thead class="TableSubHeader">
+                            <th style="width: 10%; text-align: left;">Sr #</th>
+                            @*<th style="width: 30%; text-align: left;">Course Name</th>*@
+                            <th style="width: 35%; text-align: left;">Subject Name</th>
+                            <th style="width: 5%; text-align: left;">Mandatory</th>
+                            <th style="width: 10%; text-align: center;">Edit</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="ccs in listAllClassCourseSubject | orderBy:'SubjectName' | filter: ({CompanyCode: selectedObject.CompanyCode,BranchCode: selectedObject.BranchCode,ClassCode: selectedObject.ClassCode,CourseCode: selectedObject.CourseCode}):true">
+                                <td style="text-align: left;">
+                                    {{ $index +1}}
+                                </td>
+                                @* <td style="text-align: left;">
+                <select id="CourseCode" ng-model="ccs.CourseCode" ng-options="oCourse.CourseCode as oCourse.CourseName for oCourse in listCompanyCourse | filter: {CompanyCode: selectedObject.CompanyCode}" ng-change="Course_Change(ccs)">
+                    <option value=""></option>
+
+                </select>
+            </td>*@
+                                <td style="text-align: left;">
+                                    <select id="SubjectCode" ng-model="ccs.SubjectCode" ng-options="oSubject.SubjectCode as oSubject.SubjectName for oSubject in listCompanySubjects" ng-change="Course_Change(ccs)">
+                                        <option value=""></option>
+                                    </select>
+                                </td>
+                                <td style="text-align: center;">
+                                    <input type="checkbox" value="Is Mandatory" ng-model="ccs.Mandatory" />
+                                </td>
+                                <td style="text-align: center;">
+                                    <img src="~/images/delete_entry.gif" ng-click="deleteSubjectCourse($index)" ng-show="ccs.CourseCode && ccs.SubjectCode">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td colspan="4" class="TableHeader">
+                    <div style="float: right">
+                        <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                            dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                        <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isValid()==false"
+                               dosbox="true" class="Buttons" />
+                        <input type="submit" id="btnRefresh" value="Refresh" ng-click="clear();"
+                               dosbox="true" class="Buttons" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div ng-show="saveError">
+                        <div style="color: green;">
+                            {{ saveError }}
+                        </div>
+                    </div>
+                    <div ng-show="listError">
+                        <div style="color: red">
+                            {{ listError }}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>

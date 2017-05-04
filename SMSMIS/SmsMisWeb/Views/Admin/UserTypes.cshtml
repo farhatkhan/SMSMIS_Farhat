@@ -1,0 +1,156 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Manage User Types";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/UserTypesModule.js"></script>
+}
+
+<!DOCTYPE html>
+<span class="pageTitle">Manage User Types</span>
+<br /><br />
+<div ng-app="adminModule" ng-controller="userTypesController">
+    <div id="dvListing">
+        <div id="dvSearch">
+            <table border="0">
+                <tr>
+                    <td><input type="search" placeholder="Search User Types" ng-model="search.userType" /></td>
+                    <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" /></td>
+                </tr>
+            </table>
+        </div>
+        <table border="0" class="listing">
+            <thead>
+                <tr>
+                    <th>userType</th>
+                    @*<th>Description</th>*@
+                </tr>
+            </thead>
+            <tr ng-repeat="obj in listData | filter: search" ng-class="{selected: obj.UserTypeID == selectedObject.UserTypeID}" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)">
+                <td>{{obj.userType}}</td>
+                @*<td>{{obj.Description}}</td>*@
+            </tr>
+        </table>
+        <span ng-hide="listData">Loading, please wait...</span>
+    </div>
+    <div id="dvFormContainer">
+        <table width="100%">
+            <tr>
+                <td colspan="2" style="background-color: grey; color: white">
+                    Manage User Types
+                </td>
+            </tr>
+            <tr>
+                <td>User Type</td>
+                <td>
+                    <input id="userType" type="text" ng-model="selectedObject.userType" dosbox="true" required />
+                    <input type="hidden" id="ID" ng-model="selectedObject.UserTypeID" />
+                </td>
+
+            </tr>
+            <tr>
+                <td>Access BPM Dashbaord</td>
+                <td><input id="BPMDash" type="checkbox" ng-model="selectedObject.BPMDash" dosbox="true" /></td>
+            </tr>
+            <tr>
+                <td>Access Dashbaord</td>
+                <td><input id="DPTDash" type="checkbox" ng-model="selectedObject.DPTDash" dosbox="true" /></td>
+            </tr>
+            <tr>
+                <td>Departments</td>
+                <td>
+                    <select ng-model="selectedObject.comDepartment" id="DepartmentID" ng-options="comDepartments.Name for comDepartments in departments track by comDepartments.DepartmentID" class="form-control" dosbox="true"></select>
+                </td>
+            </tr>
+            <tr>
+                <td>Branch</td>
+                <td>
+                    <select ng-model="selectedObject.comBranches" id="BranchID" ng-options="comBranches.Name for comBranches in branches track by comBranches.BranchID" class="form-control" dosbox="true"></select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="background-color: grey; color: white">
+                    Report Access
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <table style="width: 100%">
+                        <tr>
+                            <td style="vertical-align: top;">
+                                Select Branch
+                            </td>
+                            <td>
+                                <table>
+                                    <tr ng-repeat="br in branchesCopy">
+                                        <td>
+                                            <input type="checkbox" ng-model="br.isSelected" id="chk_{{br.BranchID}}" name="chk_{{br.BranchID}}" value="{{br.BranchID}}" />
+                                            <label>{{br.Name}}</label>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="vertical-align: top;"> Department </td>
+                            <td>
+
+                                <table>
+                                    <tr ng-repeat="dep in departmentsCopy">
+                                        <td>
+                                            <input type="checkbox" ng-model="dep.isSelected" id="chk_{{dep.DepartmentID}}" name="chk_{{dep.DepartmentID}}" value="{{dep.DepartmentID}}" ng-change="addToOperationalDepartmentList(dep)" />
+                                            <label>{{dep.Name}}</label>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="background-color: grey; color: white">
+                    Operation Access
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td style="vertical-align: top;">Departments</td>
+                            <td style="vertical-align: top;">
+                                <select size="6" ng-required="true" ng-model="selectedDepartmentObject" id="DepartmentID" ng-options="dept.Name for dept in selectedObject.comUserDepartment" class="form-control" dosbox="true" ng-change="GetOperationsByDeptId(selectedDepartmentObject)">
+                                    <option value="" ng-if="false"></option>
+                                </select>
+                            </td>
+                            <td style="vertical-align: top;" ng-show="selectedDepartmentObject">
+                                <table>
+                                    <tr ng-repeat="do in departmentOptCopy">
+                                        <td>
+                                            <label>{{do.OperationName}}</label>
+                                        </td>
+                                        <td>
+                                            <select ng-model="selectedObject.comUserDepartment['dept_' + do.DepartmentID].comUserOperation['opt_' + do.OperationID]"
+                                                    id="AccessTypeID" ng-options="access.accessType for access in do.AccessTypes track by access.AccessTypeID" ng-change="setOperationID(do.DepartmentID, do.OperationID)"></select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                           class="btn btn-default" dosbox="true" />
+                    <input type="submit" id="btnDelete" value="Delete" ng-click="delete();"
+                           class="btn btn-default" ng-disabled="!isEditMode" dosbox="true" />
+                    <div ng-show="saveError">Data could not be modified: {{ saveError }}</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div ng-show="listError">
+        List data could not be loaded: {{listError}}
+    </div>
+</div>

@@ -1,0 +1,332 @@
+﻿@model  SmsMis.Models.Console.Client.FeeReceipt
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "Manage FeeReciept";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/FeeReceiptModule.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+<form ng-app="clientModule1" ng-controller="FeeParticularRateController"
+      name="myForm" novalidate>
+    <div id="dvListing" >
+        <div id="dvSearch">
+            <table border="0">
+                <tr>
+                    <td><input type="search" placeholder="Search ReceiptNo" ng-model="search.ReceiptNo" /></td>
+                    <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" class="Buttons" /></td>
+                </tr>
+            </table>
+        </div>
+        <table border="0" class="listing">
+            <thead>
+                <tr>
+                    <th>Manage Fee Reciept</th>
+                </tr>
+            </thead>
+            <tr ng-repeat="obj in listData | filter: search" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)">
+                <td>{{obj.ReceiptNo}}</td>
+            </tr>
+        </table>
+        <span ng-hide="listData">@*Loading, please wait...*@</span>
+    </div>
+    <div id="dvFormContainer" class="DetailPage">
+        <table>
+            <tr>
+                <td>
+                    <table style="width: 470px">
+                        <tr>
+                            <td colspan="2" class="TableHeader">Fee Receipt</td>
+                        </tr>
+                        <tr id="trCompanyInfo">
+                            <td colspan="2">
+                                <table style="width: 100%" class="FormTable" cellspacing="1" cellpadding="2" border="0">
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Company</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" class="ComboBoxesFlexible" ng-change="loadRecord('C')" dosbox="true">
+                                            </select>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Branch</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <select id="BranchCode" ng-model="selectedObject.BranchCode" ng-options="obj.BranchCode as obj.BranchName for obj in listBranch " ng-change="loadRecord()" class="ComboBoxesFlexible" dosbox="true">
+                                            </select>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Receipt Date</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <input type="text" id="txtreceiptdate" ng-model="selectedObject.ReceiptDate" my-datepicker class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Receipt No</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <input type="text" readonly id="txtreceiptno" ng-model="selectedObject.ReceiptNo" class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Session</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <select id="txtSessionCode" ng-model="selectedObject.SessionCode" ng-options="obj.SessionCode as obj.SessionName for obj in listSession" ng-change="getSessionWise()" class="ComboBoxesFlexible" dosbox="true">
+                                                <option value=""></option>
+                                            </select>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Challan #</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <input type="text" id="txtchalanno" ng-model="selectedObject.ChallanNo" autocomplete="off" ng-change="SetSelectedAccountTitle(selectedObject)" class="ComboBoxesFlexible" dosbox="true"></input>
+                                            @*<input type="text" id="txtAccountCode{{$index}}" ng-model="session.AccountCode"  />*@
+                                            <div style="width: 400px; z-index: 10000; position: fixed;background-color:#ffffff; ">
+                                                <table class="QuickSearchResults" border="1">
+                                                    <tr style="background-color:#0094ff; font-weight:bold; ">
+                                                        <td style="text-align:center;">ChallanNo</td>
+                                                        <td style="text-align:center;">Name</td>
+                                                        <td style="text-align:center;">ClassName</td>
+                                                    </tr>
+                                                    <tr ng-repeat="x in filteredArray | filter:selectedObject.ChallanNo | limitTo: 10" ng-click="GetSelectedAccountTitle(selectedObject,x)" style="cursor:pointer">
+                                                        <td>{{ x.ChallanNo }}</td>
+                                                        <td>{{ x.FullName }}</td>
+                                                        <td>{{ x.ClassName }}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Student #</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <input type="text" id="txtStudent" ng-model="selectedObject.StudentNo" readonly class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Name</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <input type="text" id="txtName" ng-model="selectedObject.FullName" readonly class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Class</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <input type="text" id="txtclass" ng-model="selectedObject.ClassName" readonly class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Recieved at</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <select id="companyCode" ng-model="selectedObject.ReceivedAt" class="ComboBoxesFlexible" dosbox="true">
+                                                <option value="B">Bank</option>
+                                                <option value="C">Campus</option>
+                                            </select>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Instrument</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            @*<input type="text" id="cboInstrumentCode" ng-model="selectedObject.InstrumentCode" class="ComboBoxesFlexible" dosbox="true"></input>*@
+                                            <select id="txtInstrumentCode" ng-model="selectedObject.InstrumentCode" ng-options="obj.InstrumentCode as obj.InstrumentName for obj in listInstrumentType" class="ComboBoxesFlexible" dosbox="true">
+                                            </select>
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Instrument #</span>
+                                            
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <input type="text" id="txtInstrumentNo" ng-model="selectedObject.InstrumentNo" class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Instrument Date</span>
+                                            
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <input type="text" id="txtInstrumentDate" ng-model="selectedObject.InstrumentDate" my-datepicker class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 50%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Remarks</span>
+                                            
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <input type="text" id="txtRemarks" ng-model="selectedObject.Remarks" class="ComboBoxesFlexible" dosbox="true"></input>
+
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr style="display:none">
+                                        <td colspan="2">
+                                            <div style="float: right; padding-right:15px;">
+                                                <input type="button" name="Add Terms" value="Add Terms" ng-click="addGrid()" ng-show="selectedObject.CompanyCode > 0 && selectedObject.BranchCode >0 && selectedObject.SessionCode >0 && selectedObject.ClassCode > 0 " />
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2">
+                                            <table class="tbl" style="border: solid 1px #808080; width: 98%" cellspacing="1" cellpadding="1">
+                                                <thead>
+                                                <th style="width: 10%; text-align: left;">Sr #</th>
+                                                <th style="width: 70%; text-align: left;">Particular</th>
+                                                <th style="width: 20%; text-align: right;">Amount</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="session in listFeeDetail">
+                                                        <td style="text-align: left;">
+                                                            {{ $index +1}}
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" readonly id="txtRate{{$index}}" ng-model="session.ParticularName"  />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" readonly id="ttxtRate{{$index}}" ng-model="session.TotalAmount" />
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tbody>
+                                                    <tr>
+                                                        
+                                                        <td colspan="2">Grand Total</td>
+                                                        <td><input type="text" readonly id="ttxtRate{{$index}}" ng-model="selectedObject.TotalAmount" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        
+                                                        <td colspan="2">Discount Amount</td>
+                                                        <td><input type="text" readonly id="attxtRate{{$index}}" ng-model="selectedObject.DiscountAmount" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        
+                                                        <td colspan="2">Outstanding Amount</td>
+                                                        <td><input type="text" readonly id="bttxtRate{{$index}}" ng-model="selectedObject.OutstandingAmount" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">Waived Amount</td>
+                                                        <td><input type="text" id="cttxtRate{{$index}}" ng-model="selectedObject.WaivedAmount" autocomplete="off" ng-change="calcWaived()" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">Net Amount</td>
+                                                        <td><input type="text" readonly id="dttxtRate{{$index}}" ng-model="selectedObject.NetAmount" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">Received Amount</td>
+                                                        <td><input type="text" id="ettxtRate{{$index}}" ng-model="selectedObject.ReceivedAmount" /></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </td>
+                        </tr>
+                        <tr class="TableHeader">
+                            <td align="right" style="padding-right:5px;">
+                                <input type="submit" id="btnSumbit" value="Save" ng-click="save();" dosbox="true" class="Buttons" />
+                                
+                                <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="false"
+                                       dosbox="true" class="Buttons" />
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div ng-show="saveError">
+                                    <div style="color:green">
+                                        {{ saveError }}
+                                    </div>
+                                </div>
+                                <div ng-show="listError">
+                                    <div style="color:red">
+                                        {{ listError }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function hideQuickSearchResults() {
+            setTimeout(function () { $('.QuickSearchResults').hide(); }, 200);
+        }
+        function hideQuickSearchResults() {
+            setTimeout(function () { $('.ueQuickSearchResults').hide(); }, 200);
+        }
+        $('.QuickSearchResults').hide();
+        $('.ueQuickSearchResults').hide();
+        $(document).on('keydown', ':focusable', function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                // Get all focusable elements on the page
+                var $canfocus = $(':focusable');
+
+                var index = $canfocus.index(this) + 1;
+                if (index >= $canfocus.length) index = 0;
+
+                $canfocus.eq(index).focus().select();
+            }
+        });
+    </script>
+</form>
+

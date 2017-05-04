@@ -1,0 +1,136 @@
+﻿@model  SmsMis.Models.Console.Client.ItemCategory
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "Bank";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/ItemCategoryModule.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+<div ng-app="clientModule1" ng-controller="ItemCategoryController">
+    @*<div ng-app="adminModule1" ng-controller="AdmissionInquiryController">*@
+
+    <table style="width:100%">
+        <tr>
+            <td style="width:30%;vertical-align:top">
+                <div id="dvListing">
+                    <div id="dvSearch">
+                        <table border="0">
+                            <tr>
+                                <td><input type="search" placeholder="Search Name" ng-model="search.CategoryName" /></td>
+                                <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" class="Buttons" /></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table border="0" class="listing">
+                        <thead>
+                            <tr>
+                                <th>Category Type</th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="obj in listData | filter: search" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)">
+                            <td>{{obj.CategoryName}}</td>
+                        </tr>
+                    </table>
+                    <span ng-hide="listData">@*Loading, please wait...*@</span>
+                </div>
+            </td>
+            <td style="width:70%;vertical-align:top">
+                <div id="dvFormContainer" class="DetailPage">
+
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td class="TableHeader">
+                                            Manage Category Type
+                                        </td>
+                                    </tr>
+
+                                    <tr id="trCompanyInfo">
+                                        <td>
+
+                                            <table style="width: 100%" class="FormTable" cellspacing="1" cellpadding="2" border="0">
+                                                <tr>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Company </span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" class="ComboBoxesFlexible" ng-change="onCompanyChange()" dosbox="true">
+                                                            <option value=""></option>
+                                                        </select>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Category Name</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td style="width:28.5%" class="FormTableContainer">
+                                                        <input id="Text1" type="text" ng-model="selectedObject.CategoryName" maxlength="75" />
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Short Name</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td style="width:28.5%" class="FormTableContainer">
+                                                        <input id="Text2" type="text" ng-model="selectedObject.ShortName" maxlength="10" />
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Status</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <select id="cboStatus" ng-model="selectedObject.Status" dosbox="true">
+                                                            <option value="1">Active</option>
+                                                            <option value="0">In-Active</option>
+                                                        </select>
+
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr class="TableHeader">
+                                        <td align="right" style="padding-right:5px;">
+                                            <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                                                   dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                                            <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode"
+                                                   dosbox="true" class="Buttons" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div ng-show="saveError">
+                                                <div style="color:green">
+                                                    {{ saveError }}
+                                                </div>
+                                            </div>
+                                            <div ng-show="listError">
+                                                <div style="color:red">
+                                                    {{ listError }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    @*</div>*@
+</div>

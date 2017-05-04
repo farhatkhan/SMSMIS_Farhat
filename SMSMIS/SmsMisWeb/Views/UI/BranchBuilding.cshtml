@@ -1,0 +1,120 @@
+﻿@model  SmsMis.Models.Console.Handlers.Admin.Branch
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Manage Class Course";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/BranchBuildingModule.js"></script>
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+@*<span class="pageTitle">Manage Class Course</span>
+<br />*@<br />
+<form ng-app="adminModule1" ng-controller="buildingcodeController"
+      name="myForm" novalidate>
+
+    <div id="dvListing" style="height: 520px">
+        <div id="dvSearch">
+            <table border="0">
+                <tr>
+                    <td><input type="search" placeholder="Search Branch Building" ng-model="search.BuildingName" /></td>
+                    <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" /></td>
+                </tr>
+            </table>
+        </div>
+        <div style="width:inherit;height:490px; overflow-y:auto;"><table border="0" class="listing">
+            <thead>
+                <tr>
+                    <td colspan="4" class="TableSubHeader">Branch Building</td>
+                </tr>
+            </thead>
+            <tr ng-repeat="obj in listData | filter: search" ng-class="{selected: (obj.BranchCode == selectedObject.BranchCode && obj.CompanyCode == selectedObject.CompanyCode && obj.BuildingCode == selectedObject.BuildingCode)}" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)" ng-show="selectedObject.CompanyCode">
+                <td>{{obj.BuildingName}}</td>
+            </tr>
+        </table>
+        </div>
+        <span ng-hide="listData"></span>
+    </div>
+
+    <div id="dvFormContainer" class="DetailPage">
+        <table style="width: 600px">
+            <tr>
+                <td colspan="4" class="TableHeader">Manage Branch Building</td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Company<span class="required">*</span></td>
+                <td class="FormTableContainer" colspan="3">
+                    <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="objCom.CompanyCode as objCom.CompanyName for objCom in listCompany" class="form-control" dosbox="true" ng-change="CompanyCode_Change('c')">
+                        <option value=""></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft" style="width: 150px;">Branch<span class="required">*</span></td>
+                <td class="FormTableContainer" colspan="3">
+                    <select id="branchCode" ng-model="selectedObject.BranchCode" ng-options="obj.BranchCode as obj.BranchName for obj in listBranch | filter:{CompanyCode: selectedObject.CompanyCode}" class="form-control" dosbox="true" ng-change="CompanyCode_Change('b')">
+                        <option value=""></option>
+                    </select>
+
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px;" class="FormCaptionLeft">Name<span class="required">*</span></td>
+                <td class="FormTableContainer">
+                    <input name="BuildingName" type="text" ng-model="selectedObject.BuildingName" dosbox="true" style="width: 300px" class="InputBoxes" maxlength="50" required />
+                    <span style="color:red" ng-show="myForm.BuildingName.$dirty && myForm.BuildingName.$invalid">
+                        <span ng-show="myForm.BuildingName.$error.required"></span>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px;" class="FormCaptionLeft">Short Name<span class="required">*</span></td>
+                <td colspan="3" class="FormTableContainer">
+                    <input name="ShortName" type="text" ng-model="selectedObject.ShortName" dosbox="true" style="width: 300px" class="InputBoxes" maxlength="10" required />
+                    <span style="color:red" ng-show="myForm.ShortName.$dirty && myForm.ShortName.$invalid">
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Status<span class="required">*</span></td>
+                <td class="FormTableContainer">
+                    <select ng-model="selectedObject.Status" id="status" dosbox="true" class="ComboBoxesFlexible" style="width: 300px">
+                        <option value="true" ng-selected="selectedObject.Status==true">Active</option>
+                        <option value="false" ng-selected="selectedObject.Status==false">In-Active</option>
+                    </select>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td colspan="4" class="TableHeader">
+                    <div style="float: right">
+                        <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                               dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                        <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="selectedObject.CompanyCode && selectedObject.BranchCode && selectedObject.BuildingName && selectedObject.ShortName && isEditMode"
+                               dosbox="true" class="Buttons" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div ng-show="saveError">
+                        <div style="color:green;">
+                            {{ saveError }}
+                        </div>
+                    </div>
+                    <div ng-show="listError">
+                        <div style="color:red">
+                            {{ listError }}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>

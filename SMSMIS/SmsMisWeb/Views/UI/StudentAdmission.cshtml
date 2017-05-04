@@ -1,0 +1,255 @@
+﻿@model  SmsMis.Models.Console.Client.StudentAdmission
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Manage Student";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/StudentAdmissionModule.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+@*<span class="pageTitle">Manage Student</span>
+    <br />*@<br />
+<form ng-app="clientModule" ng-controller="studentAdmissionController"
+      name="myForm" novalidate>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            jQuery(".content").hide();
+            //toggle the componenet with class msg_body
+            jQuery(".heading").click(function () {
+                jQuery(this).next(".content").slideToggle();
+                if (jQuery(this).find('img').attr('src').indexOf("expand") > 0)
+                    jQuery(this).find('img').attr("src", "../images/collapse.png");
+                else
+                    jQuery(this).find('img').attr("src", "../images/expand.png");
+            });
+        });
+    </script>
+
+    <div id="dvFormContainer" class="DetailPage">
+        <table style="width: 600px">
+            <tr>
+                <td colspan="2" class="TableHeader">Student Admission</td>
+            </tr>
+            <tr>
+                <td colspan="2" class="TableSubHeader">Filter Students</td>
+            </tr>
+            <tr id="trCompanyInfo">
+                <td colspan="2">
+                    <table style="width: 100%">
+                        <tr>
+                            <td style="width: 150px;" class="FormCaptionLeft">Company<span class="required">*</span></td>
+                            <td style="width: 300px;" class="FormTableContainer">
+                                <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" class="ComboBoxesFlexible" ng-disabled="isEditMode" dosbox="true" ng-change="LoadStudents()">
+                                    <option value=""></option>
+                                </select>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FormCaptionLeft">Branch<span class="required">*</span></td>
+                            <td class="FormTableContainer">
+                                <select id="BranchCode" ng-model="selectedObject.BranchCode" ng-options="obj.BranchCode as obj.BranchName for obj in listBranch | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" ng-disabled="!selectedObject.CompanyCode" dosbox="true" ng-change="LoadStudents()">
+                                    <option value=""></option>
+                                </select>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FormCaptionLeft">Session<span class="required">*</span></td>
+                            <td class="FormTableContainer">
+                                <select id="SessionCode" ng-model="selectedObject.SessionCode" ng-options="obj.SessionCode as obj.SessionName for obj in listSession | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" ng-disabled="!selectedObject.CompanyCode" dosbox="true" ng-change="LoadStudents()">
+                                    <option value=""></option>
+                                </select>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 150px;" class="FormCaptionLeft">Class <span class="required">*</span></td>
+                            <td style="width: 300px;" class="FormTableContainer">
+
+                                <select id="ClassCode" ng-model="selectedObject.ClassCode" ng-options="obj.ClassCode as obj.ClassName for obj in listAllClass | filter: {CompanyCode: selectedObject.CompanyCode,BranchCode: selectedObject.BranchCode}" class="ComboBoxesFlexible" dosbox="true" ng-change="LoadStudents()">
+                                    <option value=""></option>
+                                </select>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="FormCaptionLeft">Gender<span class="required">*</span></td>
+                            <td class="FormTableContainer">
+                                <select ng-model="selectedObject.Gender" class="ComboBoxesFlexible" ng-change="LoadStudents()">
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>
+
+                            </td>
+                        </tr>
+
+                    </table>
+                </td>
+            </tr>
+
+            <tr id="tr">
+                <td colspan="2">
+                    <table border="1" class="listing" cellpadding="2" cellspacing="2">
+                        <thead>
+                            <tr>
+                                <th>Sr #</th>
+                                <th>Student #</th>
+                                <th>Student Name</th>
+                                <th>Father Name</th>
+                                <th>Mother Name</th>
+                                <th>NIC #</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="obj in listStudentData" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)" ng-show="selectedObject.CompanyCode">
+                            <td>{{$index + 1}}</td>
+                            <td>{{obj.StudentNo}}</td>
+                            <td>{{obj.FullName}}</td>
+                            <td>{{obj.FatherName}}</td>
+                            <td>{{obj.MotherName}}</td>
+                            <td>{{obj.StudentNICNo}}</td>
+                            <td><select ng-init="obj.AdmissionStatus='In-Active'" ng-change="AdmissionStatus_Change(obj)" ng-model="obj.AdmissionStatus"><option ng-selected="obj.AdmissionStatus=='In-Active'">In-Active</option><option ng-selected="obj.AdmissionStatus=='Admission'">Admission</option></select></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+    <div id="dvfileupload" style="position: absolute; left: 1px; top: 1px; width: 1000px; display: none;
+		height: 450px; background-image: url(/Images/iframe_shield.gif);">
+        <table style="width: 60%;margin-left:auto; margin-right:auto;margin-top: 100px;box-shadow:7px 7px 5px #888888;" class="FormTable">
+            <tr>
+                <td colspan="2">
+
+                    <table width="100%">
+                        <tr>
+                            <td class="TableSubHeader" style="width: 99%">Enroll Student</td>
+                            <td><img src="~/images/close.gif" style="cursor: pointer;" ng-click="close()" /></td>
+                        </tr>
+
+                    </table>
+
+                </td>
+
+                
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Student Roll #<span class="required">*</span></td>
+                <td class="FormTableContainer"><input type="text" ng-model="selectedObjectPop.StudentRollNo" style="width: 40%" /></td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Branch<span class="required">*</span></td>
+                <td class="FormTableContainer">
+                    <select id="BranchCode" ng-model="selectedObjectPop.BranchCode" ng-options="obj.BranchCode as obj.BranchName for obj in listBranchEx | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" ng-disabled="!selectedObject.CompanyCode" dosbox="true" style="width: 85%">
+                        <option value=""></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Building<span class="required">*</span></td>
+                <td class="FormTableContainer">
+                    <select id="BuildingCode" ng-model="selectedObjectPop.BuildingCode" ng-options="obj.BuildingCode as obj.BuildingName for obj in listBranchBuilding | filter: {CompanyCode: selectedObject.CompanyCode,BranchCode: selectedObjectPop.BranchCode}" class="ComboBoxesFlexible" dosbox="true" style="width: 85%">
+                        <option value=""></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Session<span class="required">*</span></td>
+                <td class="FormTableContainer">
+                    <select id="SessionCode" ng-model="selectedObjectPop.SessionCode" ng-options="obj.SessionCode as obj.SessionName for obj in listSessionEx | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" dosbox="true" style="width: 85%">
+                        <option value=""></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px;" class="FormCaptionLeft">Class <span class="required">*</span></td>
+                <td style="width: 300px;" class="FormTableContainer">
+                    <select id="ClassCode" ng-model="selectedObjectPop.ClassCode" ng-options="obj.ClassCode as obj.ClassName for obj in listAllClass | filter: {CompanyCode: selectedObject.CompanyCode,BranchCode: selectedObjectPop.BranchCode}" class="ComboBoxesFlexible" dosbox="true" style="width: 85%">
+                        <option value=""></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 150px;" class="FormCaptionLeft">Course <span class="required">*</span></td>
+                <td style="width: 300px;" class="FormTableContainer">
+                    <select id="ClassCode" ng-model="selectedObjectPop.CourseCode" ng-options="obj.CourseCode as obj.CourseName for obj in listAllClassCourse | filter: {CompanyCode: selectedObject.CompanyCode,ClassCode:selectedObjectPop.ClassCode}" class="ComboBoxesFlexible" dosbox="true" ng-disabled="!selectedObjectPop.ClassCode" style="width: 85%"
+                            ng-change="ClassCourse_Change()">
+                        <option value=""></option>
+                    </select>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="FormCaptionLeft">Section<span class="required">*</span></td>
+                <td style="width: 300px;" class="FormTableContainer">
+                    <select id="ClassCode" ng-model="selectedObjectPop.SectionCode" ng-options="obj.SectionCode as obj.SectionName for obj in listAllSections | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" dosbox="true" style="width: 85%">
+                        <option value=""></option>
+                    </select>
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <table class="tbl" style="border: solid 1px #808080; width: 98%" cellspacing="1" cellpadding="1">
+                        <thead class="TableSubHeader">
+                        <th style="width: 5%; text-align: left;">Sr #</th>
+                        <th style="width: 25%; text-align: left;">Subject Name</th>
+                        <th style="width: 20%; text-align: left;">Section</th>
+                        <th style="width: 10%; text-align: center;">Edit</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="ccs in listAllClassCourseSubject | filter: ({CompanyCode: selectedObject.CompanyCode,BranchCode: selectedObject.BranchCode,ClassCode: selectedObject.ClassCode}):true">
+                                <td style="text-align: left;">
+                                    {{ $index +1}}
+                                </td>
+                                <td style="text-align: left;">
+                                    <select id="SubjectCode" ng-model="ccs.SubjectCode" ng-options="oSubject.SubjectCode as oSubject.SubjectName for oSubject in listCompanySubjects" ng-change="Course_Change(ccs)" ng-disabled="ccs.Mandatory">
+                                        <option value=""></option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select id="ClassCode" ng-model="ccs.SectionCode" ng-options="obj.SectionCode as obj.SectionName for obj in listAllSections | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" dosbox="true">
+                                        <option value=""></option>
+                                    </select>
+                                </td>
+                                <td style="text-align: center;">
+                                    <img src="~/images/delete_entry.gif" ng-click="deleteSubjectCourse($index)" ng-show="ccs.CourseCode && ccs.SubjectCode">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td style="width: 150px;" class="FormTableContainer"></td>
+                <td style="width: 300px;" class="FormTableContainer">
+                    <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                           dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                    <div ng-show="saveError">
+                        <div style="color:green"> {{ saveError }}</div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript">
+        function ShowDiv() {
+            $('#dvfileupload').fadeIn(1000);
+        }
+        function HideDiv() {
+            $('#dvfileupload').fadeOut(1000);
+        }
+    </script>
+</form>

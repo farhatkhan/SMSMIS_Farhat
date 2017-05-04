@@ -1,0 +1,156 @@
+﻿@model  SmsMis.Models.Console.Client.StudentFeeTermScholarship
+@{    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "Manage Branch";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/StudentFeeTermScholarshipModule.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+<span class="pageTitle">Manage Student Term Scholarship</span>
+<br /><br />
+<form ng-app="clientModule1" ng-controller="studentTermScholarshipController"
+      name="myForm" novalidate>
+    <div id="dvListing">
+        <div id="dvSearch">
+            <table border="0">
+                <tr>
+                    <td><input type="search" placeholder="Search Scholarship" ng-model="search.ScholarshipRate" /></td>
+                    <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" class="Buttons" /></td>
+                </tr>
+            </table>
+        </div>
+        <table border="0" class="listing">
+            <thead>
+                <tr>
+                    <th>Manage Term Scholarship</th>
+                </tr>
+            </thead>
+            <tr ng-repeat="obj in listData | filter: search" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)">
+                <td>{{obj.ScholarshipRate}}</td>
+            </tr>
+        </table>
+        <span ng-hide="listData">@*Loading, please wait...*@</span>
+    </div>
+    <div id="dvFormContainer" class="DetailPage">
+        <table>
+            <tr>
+                <td>
+                    <table style="width: 470px">
+                        <tr>
+                            <td colspan="2" class="TableHeader">Student Fixed Scholarship</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="TableSubHeader">Scholarship Details</td>
+                        </tr>
+                        <tr id="trCompanyInfo">
+                            <td colspan="2">
+                                <table style="width: 100%" class="FormTable" cellspacing="1" cellpadding="2" border="0">
+                                    <tr>
+                                        <td style="width:50%" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Company</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" class="ComboBoxesFlexible" ng-disabled="isEditMode" dosbox="true">
+                                                <option value=""></option>
+                                            </select>
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:50%" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Branch</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <select id="BranchCode" ng-model="selectedObject.BranchCode" ng-options="obj.BranchCode as obj.BranchName for obj in listBranch | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" ng-disabled="!selectedObject.CompanyCode || isEditMode" dosbox="true">
+                                                <option value=""></option>
+                                            </select>
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:50%" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Session</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <select id="SessionCode" ng-model="selectedObject.SessionCode" ng-options="obj.SessionCode as obj.SessionName for obj in listSession | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" ng-disabled="!selectedObject.BranchCode || isEditMode" dosbox="true">
+                                                <option value=""></option>
+                                            </select>
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:50%" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Student</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <select id="studentCode" ng-model="selectedObject.StudentNo" ng-options="obj.StudentNo as obj.FullName for obj in listStudent | filter: {CompanyCode: selectedObject.CompanyCode,BranchCode: selectedObject.BranchCode,SessionCode: selectedObject.SessionCode}: true" class="ComboBoxesFlexible" ng-disabled="!selectedObject.SessionCode || isEditMode" dosbox="true">
+                                                <option value=""></option>
+                                            </select>
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:50%" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Fee Term</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <select id="feeterm" ng-model="selectedObject.FeeTermCode" ng-options="obj.FeeTermCode as obj.FeeTermName for obj in listFeeTerm | filter: {CompanyCode: selectedObject.CompanyCode}: true" class="ComboBoxesFlexible" ng-disabled="!selectedObject.StudentNo || isEditMode" dosbox="true">
+                                                <option value=""></option>
+                                            </select>
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:50%" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Scholarship</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:49%" class="FormTableContainer">
+                                            <input type="text" ng-model="selectedObject.ScholarshipRate" maxlength="10" ng-disabled="!selectedObject.FeeTermCode" />
+                                            
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </td>
+                        </tr>
+                        <tr class="TableHeader">
+                            <td align="right" style="padding-right:5px;">
+                                <input type="submit" id="btnSumbit" value="Save" ng-click="save();" dosbox="true" class="Buttons" />
+                                <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode" dosbox="true" class="Buttons" />
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div ng-show="saveError">
+                                    <div style="color:green">
+                                        {{ saveError }}
+                                    </div>
+                                </div>
+                                <div ng-show="listError">
+                                    <div style="color:red">
+                                        {{ listError }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+

@@ -1,0 +1,197 @@
+﻿@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "Bank";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/printJournalModule.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+}
+<script>
+    showShield();
+</script>
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+<span class="pageTitle">Manage General Journal</span>
+<br /><br />
+
+<div ng-app="clientModule1" ng-controller="PJController">
+    @*<div ng-app="adminModule1" ng-controller="AdmissionInquiryController">*@
+
+    <table style="width:100%">
+        <tr>
+
+            <td style="width:70%;">
+                <div id="dvFormContainer" class="DetailPage">
+
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td class="TableHeader">
+                                            <span class="requiredCaption">Bank</span>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr id="trCompanyInfo">
+                                        <td>
+
+                                            <table style="width: 100%" class="FormTable" cellspacing="1" cellpadding="2" border="0">
+                                                <tr>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Company </span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" class="ComboBoxesFlexible" ng-change="getCOACompanyWise(obj.CompanyName)" ng-disabled="isEditMode" dosbox="true"></select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Branch</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        @*<select id="BranchCode" ng-model="selectedObject.BranchCode" ng-options="obj.BranchCode as obj.BranchName for obj in listBranch | filter: {CompanyCode: selectedObject.CompanyCode}" class="ComboBoxesFlexible" ng-disabled="!selectedObject.CompanyCode || isEditMode" dosbox="true">
+                                                                <option value=""></option>
+                                                            </select>*@
+                                                        <div style="height:125px;overflow-y:auto">
+                                                            <div ng-repeat="br in listBranch | filter: {CompanyCode: selectedObject.CompanyCode}">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input id="chk{{br.BranchCode}}" type="checkbox" ng-model="br.isSelected">
+                                                                        </td>
+                                                                        <td>
+                                                                            {{br.BranchName}}
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Voucher Type</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <div style="height:125px;overflow-y:auto">
+                                                            <div ng-repeat="br in listVoucherType | filter: {CompanyCode: selectedObject.CompanyCode}">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input id="chk{{br.VoucherCode}}" type="checkbox" ng-model="br.isSelected">
+                                                                        </td>
+                                                                        <td>
+                                                                            {{br.VoucherName}}
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Voucher Type</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <div style="height:125px;overflow-y:auto">
+                                                            <div ng-repeat="br in listCOA | filter: {CompanyCode: selectedObject.CompanyCode}">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <input id="chk{{br.AccountCode}}" type="checkbox" ng-model="br.isSelected">
+                                                                        </td>
+                                                                        <td>
+                                                                            {{br.AccountTitle}} ({{br.AccountCode}})
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">From Voucher Date</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="txtfromvoucherdate" ng-model="selectedObject.FromDate" my-datepicker class="ComboBoxesFlexible" dosbox="true"></input>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">To Voucher Date</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="txttovoucherdate" ng-model="selectedObject.ToDate" my-datepicker class="ComboBoxesFlexible" dosbox="true"></input>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">From Voucher</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="txtfromvoucherdate" ng-model="selectedObject.FromVoucher" class="ComboBoxesFlexible" dosbox="true"></input>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">To Voucher</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="txttovoucherdate" ng-model="selectedObject.ToVoucher" class="ComboBoxesFlexible" dosbox="true"></input>
+                                                    </td>
+                                                </tr>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr class="TableHeader">
+                                        <td align="right" style="padding-right:5px;">
+                                            <input type="submit" id="btnSumbit" value="Preview Report" ng-click="openreport();"
+                                                   dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                                            <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode"
+                                                   dosbox="true" class="Buttons" />
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div ng-show="saveError">
+                                                <div style="color:green">
+                                                    {{ saveError }}
+                                                </div>
+                                            </div>
+                                            <div ng-show="listError">
+                                                <div style="color:red">
+                                                    {{ listError }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    @*</div>*@
+</div>

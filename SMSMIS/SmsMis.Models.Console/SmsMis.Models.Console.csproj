@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{68214F6F-3E0C-48FE-A2B3-6907091EBA19}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmsMis.Models.Console</RootNamespace>
+    <AssemblyName>SmsMis.Models.Console</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationBlocks.Data">
+      <HintPath>E:\Projects\Adviserlogic\AdviserLogic\AdviserBusinessLogic\Referenced Assemblies\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TrackableEntities.Common">
+      <HintPath>..\packages\TrackableEntities.Common.2.1.0.0\lib\portable-net40+sl5+win8+windowsphone8\TrackableEntities.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="TrackableEntities.EF.6">
+      <HintPath>..\packages\TrackableEntities.EF.6.2.1.0.0\lib\net45\TrackableEntities.EF.6.dll</HintPath>
+    </Reference>
+    <Reference Include="TrackerEnabledDbContext">
+      <HintPath>..\packages\TrackerEnabledDbContext.2.0.0\lib\net451\TrackerEnabledDbContext.dll</HintPath>
+    </Reference>
+    <Reference Include="Utils">
+      <HintPath>..\Utils\bin\Debug\Utils.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Handlers\hdlAnalysisType.cs" />
+    <Compile Include="Handlers\hdlParty.cs" />
+    <Compile Include="Handlers\hdlCOAGroup.cs" />
+    <Compile Include="Handlers\hdlCommonMethods.cs" />
+    <Compile Include="Handlers\hdlCostCenter.cs" />
+    <Compile Include="Handlers\hdlCSMaster.cs" />
+    <Compile Include="Handlers\hdlFeeReceipt.cs" />
+    <Compile Include="Handlers\hdlInstrumentSerialMaster.cs" />
+    <Compile Include="Handlers\hdlProject.cs" />
+    <Compile Include="Handlers\hdlStudentFixedDiscount.cs" />
+    <Compile Include="Handlers\hdlStudentFixedDiscountType.cs" />
+    <Compile Include="Handlers\hdlVoucherTypeBranch.cs" />
+    <Compile Include="Models\admUser.cs" />
+    <Compile Include="Models\AnalysisType.cs" />
+    <Compile Include="Models\AnalysisTypeBranch.cs" />
+    <Compile Include="Models\Branch.cs" />
+    <Compile Include="Models\BranchBuilding.cs" />
+    <Compile Include="Models\BranchContactPerson.cs" />
+    <Compile Include="Models\BranchSession.cs" />
+    <Compile Include="Models\BranchType.cs" />
+    <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\CategoryBranch.cs" />
+    <Compile Include="Models\Class.cs" />
+    <Compile Include="Models\ClassCourse.cs" />
+    <Compile Include="Models\ClassCourseSubject.cs" />
+    <Compile Include="Models\ClientContext.cs" />
+    <Compile Include="Models\COAGroup.cs" />
+    <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\ConfigurationContext.cs" />
+    <Compile Include="Models\CostCenter.cs" />
+    <Compile Include="Models\CostCenterBranch.cs" />
+    <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\CSDataAs.cs" />
+    <Compile Include="Models\CSDetail.cs" />
+    <Compile Include="Models\CSFontStyle.cs" />
+    <Compile Include="Models\CSMaster.cs" />
+    <Compile Include="Models\CSObjectBorder.cs" />
+    <Compile Include="Models\CSRowAction.cs" />
+    <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\DepartmentBranch.cs" />
+    <Compile Include="Models\Designation.cs" />
+    <Compile Include="Models\DesignationBranch.cs" />
+    <Compile Include="Models\DocType.cs" />
+    <Compile Include="Models\ExamType.cs" />
+    <Compile Include="Models\FeeParticular.cs" />
+    <Compile Include="Models\FeeParticularRecurringType.cs" />
+    <Compile Include="Models\FeeReceipt.cs" />
+    <Compile Include="Models\FiscalYear.cs" />
+    <Compile Include="Models\Grade.cs" />
+    <Compile Include="Models\GradeBranch.cs" />
+    <Compile Include="Models\GradingCriteria.cs" />
+    <Compile Include="Models\House.cs" />
+    <Compile Include="Models\InstrumentSerialDetail.cs" />
+    <Compile Include="Models\InstrumentSerialMaster.cs" />
+    <Compile Include="Models\InstrumentTypeVM.cs" />
+    <Compile Include="Models\ItemBrand.cs" />
+    <Compile Include="Models\ItemCategory.cs" />
+    <Compile Include="Models\ItemGrade.cs" />
+    <Compile Include="Models\ItemModel.cs" />
+    <Compile Include="Models\LinksInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\MarketingReference.cs" />
+    <Compile Include="Models\MeasuringUnit.cs" />
+    <Compile Include="Models\Nationality.cs" />
+    <Compile Include="Models\Party.cs" />
+    <Compile Include="Models\Project.cs" />
+    <Compile Include="Models\ProjectBranch.cs" />
+    <Compile Include="Models\Religion.cs" />
+    <Compile Include="Models\SeatType.cs" />
+    <Compile Include="Models\Section.cs" />
+    <Compile Include="Models\Session.cs" />
+    <Compile Include="Models\StudentFixedDiscount.cs" />
+    <Compile Include="Models\StudentFixedDiscountType.cs" />
+    <Compile Include="Models\Subject.cs" />
+    <Compile Include="Models\SubjectPapers.cs" />
+    <Compile Include="Models\SubjectTeacher.cs" />
+    <Compile Include="Models\Type.cs" />
+    <Compile Include="Models\TypeBranch.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="AuditLog.cs" />
+    <Compile Include="Models\cltUsers.cs" />
+    <Compile Include="Models\comUsers.cs" />
+    <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\KinshipDiscount.cs" />
+    <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\StudentAdmission.cs" />
+    <Compile Include="Models\StudentAdmissionSubject.cs" />
+    <Compile Include="Models\StudentApplicationCheckList.cs" />
+    <Compile Include="Models\StudentKinship.cs" />
+    <Compile Include="Models\StudentLastClassSubject.cs" />
+    <Compile Include="Models\StudentMarketingReference.cs" />
+    <Compile Include="Common\ExceptionTranslater.cs" />
+    <Compile Include="Common\Functions.cs" />
+    <Compile Include="Models\SmsMisDB.cs" />
+    <Compile Include="Common\GlobalConstants.cs" />
+    <Compile Include="Common\hdlCommon.cs" />
+    <Compile Include="Models\Bank.cs" />
+    <Compile Include="Models\ChartOfAccounts.cs" />
+    <Compile Include="Models\COABranch.cs" />
+    <Compile Include="Models\COALevels.cs" />
+    <Compile Include="Models\Currency.cs" />
+    <Compile Include="Models\FeeBillDetail.cs" />
+    <Compile Include="Models\FeeBillDetailMonthly.cs" />
+    <Compile Include="Models\FeeBillMaster.cs" />
+    <Compile Include="Models\FeeBillPaymentTerms.cs" />
+    <Compile Include="Models\FeeParticularRate.cs" />
+    <Compile Include="Models\FeePeriod.cs" />
+    <Compile Include="Models\FeeTerm.cs" />
+    <Compile Include="Models\InstrumentSerial.cs" />
+    <Compile Include="Models\InstrumentType.cs" />
+    <Compile Include="Models\monthList.cs" />
+    <Compile Include="Models\Prefrences.cs" />
+    <Compile Include="Models\StudentBillingCycle.cs" />
+    <Compile Include="Models\StudentFeeTermScholarship.cs" />
+    <Compile Include="Models\StudentFixedScholarship.cs" />
+    <Compile Include="Models\StudentOptionalFeeParticular.cs" />
+    <Compile Include="Models\StudentSubject.cs" />
+    <Compile Include="Models\SubjectPracticleFee.cs" />
+    <Compile Include="Models\VoucherDetail.cs" />
+    <Compile Include="Models\VoucherMaster.cs" />
+    <Compile Include="Models\VoucherType.cs" />
+    <Compile Include="Handlers\CompanyHandler.cs" />
+    <Compile Include="Handlers\hdlBranchBuilding.cs" />
+    <Compile Include="Handlers\hdlCategory.cs" />
+    <Compile Include="Handlers\hdlDepartment.cs" />
+    <Compile Include="Handlers\hdlDesignation.cs" />
+    <Compile Include="Handlers\hdlDocType.cs" />
+    <Compile Include="Handlers\hdlFeeParticularRecurringType.cs" />
+    <Compile Include="Handlers\hdlFeeParticular.cs" />
+    <Compile Include="Handlers\hdlGrade.cs" />
+    <Compile Include="Handlers\hdlHouse.cs" />
+    <Compile Include="Handlers\hdlNationality.cs" />
+    <Compile Include="Handlers\hdlSeatType.cs" />
+    <Compile Include="Handlers\hdlClassCourseSubject.cs" />
+    <Compile Include="Handlers\hdlSection.cs" />
+    <Compile Include="Handlers\hdlCourse.cs" />
+    <Compile Include="Handlers\hdlClass.cs" />
+    <Compile Include="Handlers\hdlReligion.cs" />
+    <Compile Include="Handlers\hdlMarketingReference.cs" />
+    <Compile Include="Handlers\hdlSubject.cs" />
+    <Compile Include="Handlers\hdlBranchSession.cs" />
+    <Compile Include="Handlers\hdlCompanySession.cs" />
+    <Compile Include="Handlers\hdlBranch.cs" />
+    <Compile Include="Handlers\hdlType.cs" />
+    <Compile Include="Handlers\hdlEmployee.cs" />
+    <Compile Include="Handlers\hdlStudent.cs" />
+    <Compile Include="Handlers\hdlBank.cs" />
+    <Compile Include="Handlers\hdlChartOfAccounts.cs" />
+    <Compile Include="Handlers\hdlCOALevels.cs" />
+    <Compile Include="Handlers\hdlCurrency.cs" />
+    <Compile Include="Handlers\hdlFeeBillMaster.cs" />
+    <Compile Include="Handlers\hdlFeeBillPaymentTerms.cs" />
+    <Compile Include="Handlers\hdlFeeParticularRate.cs" />
+    <Compile Include="Handlers\hdlFeeTerm.cs" />
+    <Compile Include="Handlers\hdlInstrumentSerial.cs" />
+    <Compile Include="Handlers\hdlInstrumentType.cs" />
+    <Compile Include="Handlers\hdlPrefrences.cs" />
+    <Compile Include="Handlers\hdlStudentBillingCycle.cs" />
+    <Compile Include="Handlers\hdlStudentFeeTermScholarship.cs" />
+    <Compile Include="Handlers\hdlStudentFixedScholarship.cs" />
+    <Compile Include="Handlers\hdlStudentOptionalFeeParticular.cs" />
+    <Compile Include="Handlers\hdlSubjectPracticleFee.cs" />
+    <Compile Include="Handlers\hdlVoucherMaster.cs" />
+    <Compile Include="Handlers\hdlVoucherType.cs" />
+    <Compile Include="Models\VoucherTypeBranch.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\VoucherType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Handlers\Admin\" />
+    <Folder Include="Handlers\Client\" />
+    <Folder Include="Handlers\Fee\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

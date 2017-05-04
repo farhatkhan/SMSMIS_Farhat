@@ -1,0 +1,153 @@
+﻿@model  SmsMis.Models.Console.Client.StudentFixedDiscountType
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "Bank";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/StudentFixedDiscountTypeModule.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+}
+<script>
+    showShield();
+</script>
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+<div ng-app="clientModule1" ng-controller="StudentFixedDiscountTypeController">
+    @*<div ng-app="adminModule1" ng-controller="AdmissionInquiryController">*@
+
+    <table style="width:100%">
+        <tr>
+            <td style="width:30%;vertical-align:top">
+                <div id="dvListing">
+                    <div id="dvSearch">
+                        <table border="0">
+                            <tr>
+                                <td><input type="search" placeholder="Search Name" ng-model="search.DiscountTypeName" /></td>
+                                <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" class="Buttons" /></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table border="0" class="listing">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="obj in filteredArray | filter: search" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)">
+                            <td>{{obj.DiscountTypeName }}</td>
+                        </tr>
+                    </table>
+                    <span ng-hide="listData">@*Loading, please wait...*@</span>
+                </div>
+            </td>
+            <td style="width:70%;">
+                <div id="dvFormContainer" class="DetailPage">
+
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td class="TableHeader">
+                                            <span class="requiredCaption">Manage Fixed Discount Type</span>
+
+                                        </td>
+                                    </tr>
+                                    <tr id="trCompanyInfo">
+                                        <td>
+                                            <table style="width: 100%" class="FormTable" cellspacing="1" cellpadding="2" border="0">
+                                                <tr>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Company </span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <select id="companyCode" ng-model="selectedObject.CompanyCode" ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" class="ComboBoxesFlexible" ng-change="getCompanyWise()" dosbox="true"></select>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Branch</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <select id="BranchCode" ng-model="selectedObject.BranchCode" ng-options="obj.BranchCode as obj.BranchName for obj in listBranch | filter: {CompanyCode: selectedObject.CompanyCode}" ng-change="showGrid()" class="ComboBoxesFlexible" dosbox="true"></select>
+
+                                                    </td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Name</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="tdIssueDate" ng-model="selectedObject.DiscountTypeName" maxlength="50" class="ComboBoxesFlexible" dosbox="true"></input>
+                                                    </td>
+                                                    </tr>
+                                                <tr>
+                                                    <td nowrap="nowrap" style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Short Name</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td style="width:28.5%" class="FormTableContainer">
+                                                        <input type="text" id="abcIssueDate" ng-model="selectedObject.ShortName" maxlength="10" class="ComboBoxesFlexible" dosbox="true"></input>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width:21%" class="FormCaptionLeft">
+                                                        <span class="requiredCaption">Status</span>
+                                                        <span class="required">*</span>
+                                                    </td>
+                                                    <td nowrap="nowrap" style="width:28.5%" class="FormTableContainer">
+                                                        <select id="cboStatus" ng-model="selectedObject.Status" dosbox="true">
+                                                            <option value="1">Active</option>
+                                                            <option value="0">In-Active</option>
+                                                        </select>
+
+                                                    </td>
+
+                                                </tr>
+                                                
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="TableHeader">
+                                        <td align="right" style="padding-right:5px;">
+                                            <input type="submit" id="btnSumbit" value="Save" ng-click="save();"
+                                                   dosbox="true" ng-disabled="isValid()" class="Buttons" />
+                                            <input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="isEditMode"
+                                                   dosbox="true" class="Buttons" />
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div ng-show="saveError">
+                                                <div style="color:green">
+                                                    {{ saveError }}
+                                                </div>
+                                            </div>
+                                            <div ng-show="listError">
+                                                <div style="color:red">
+                                                    {{ listError }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    @*</div>*@
+</div>

@@ -1,0 +1,274 @@
+﻿@model  SmsMis.Models.Console.Client.FeeParticularRate
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "Manage Branch";
+}
+@section Scripts {
+    <script src="~/ng-Scripts/GenerateFeeBillModule.js"></script>
+    <link href="~/design/Default.css" rel="stylesheet" />
+}
+
+<style>
+    .tbl td {
+        border: 1px solid black;
+    }
+</style>
+
+<span class="pageTitle">Manage Fee Bill Master</span>
+<br /><br />
+<form ng-app="clientModule1" ng-controller="FeeParticularRateController"
+      name="myForm" novalidate>
+    <div id="dvListing" style="display:none">
+        <div id="dvSearch">
+            <table border="0">
+                <tr>
+                    <td><input type="search" placeholder="Search AccountCode" ng-model="search.AccountCode" /></td>
+                    <td><img src="~/images/actions/add.png" style="cursor:pointer;" ng-click="clear();" class="Buttons" /></td>
+                </tr>
+            </table>
+        </div>
+        <table border="0" class="listing">
+            <thead>
+                <tr>
+                    <th>Manage Fee Bill Master</th>
+                </tr>
+            </thead>
+            <tr ng-repeat="obj in listData | filter: search" class="ng-class-even: 'even'; ng-class-odd: 'odd';" ng-click="load(obj)">
+                <td>{{obj.AccountCode}}</td>
+            </tr>
+        </table>
+        <span ng-hide="listData">@*Loading, please wait...*@</span>
+    </div>
+    <div id="dvFormContainer" class="DetailPage">
+        <table>
+            <tr>
+                <td>
+                    <table style="width: 550px">
+                        <tr>
+                            <td colspan="2" class="TableHeader">Fee Bill Master</td>
+                        </tr>
+                        <tr id="trCompanyInfo">
+                            <td colspan="2">
+                                <table style="width: 100%" class="FormTable" cellspacing="1" cellpadding="2" border="0">
+                                    <tr>
+                                        <td style="width: 21%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Company</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:28.5%" class="FormTableContainer">
+                                            <select id="cboCompanyCode" ng-model="selectedObject.CompanyCode"  ng-options="obj.CompanyCode as obj.CompanyName for obj in listCompany" class="ComboBoxesFlexible" ng-change="getCOACompanyWise()" dosbox="true"></select>
+                                        </td>
+                                        <td style="width: 21%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Branch</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:28.5%" class="FormTableContainer">
+                                            <select id="cboBranchCode" ng-model="selectedObject.BranchCode" ng-options="obj.BranchCode as obj.BranchName for obj in listBranch | filter: {CompanyCode: selectedObject[0].CompanyCode}" class="ComboBoxesFlexible" dosbox="true">
+                                                <option value=""></option>
+
+                                            </select>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="width: 21%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Session</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:28.5%" class="FormTableContainer">
+                                            <select id="cboSessionCode" ng-model="selectedObject.SessionCode" ng-options="obj.SessionCode as obj.SessionName for obj in listSession | filter: {CompanyCode: selectedObject[0].CompanyCode}" class="ComboBoxesFlexible" dosbox="true">
+                                                <option value=""></option>
+                                            </select>
+                                        </td>
+                                        <td style="width: 21%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Bank</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:28.5%" class="FormTableContainer">
+                                            <select id="cboBankCode" ng-model="selectedObject.BankCode" ng-options="obj.BankCode as obj.BankName for obj in listBank | filter: {CompanyCode: selectedObject[0].CompanyCode, BranchCode: selectedObject[0].BranchCode}" class="ComboBoxesFlexible" dosbox="true">
+                                                <option value=""></option>
+
+                                            </select>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="width: 21%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Fee Term</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:28.5%;height:130px" class="FormTableContainer">
+                                            <div style="height:125px;overflow-y:auto">
+                                                <div ng-repeat="br in monthList">
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <input id="chk{{br.name}}"  type="checkbox" ng-model="br.isSelected">
+                                                            </td>
+                                                            <td>
+                                                                {{br.name}}
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                        <td style="width: 21%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Class</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:28.5%;height:130px" class="FormTableContainer">
+                                            <div style="height:125px;overflow-y:auto">
+                                                <div ng-repeat="br in listClass">
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <input id="chk{{br.ClassCode}}" type="checkbox" ng-model="br.isSelected">
+                                                            </td>
+                                                            <td>
+                                                                {{br.ClassName}}
+
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 21%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Issue Date</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:28.5%" class="FormTableContainer">
+                                            <input id="IssueDate" type="text" ng-model="selectedObject.IssueDate" my-datepicker class="ComboBoxesFlexible" dosbox="true"></input>
+                                        </td>
+                                        <td style="width: 21%;" class="FormCaptionLeft">
+                                            <span class="requiredCaption">Due Date</span>
+                                            <span class="required">*</span>
+                                        </td>
+                                        <td style="width:28.5%" class="FormTableContainer">
+                                            <input id="DueDate" type="text" ng-model="selectedObject.DueDate" my-datepicker class="ComboBoxesFlexible" dosbox="true"></input>
+                                        </td>
+                                    </tr>
+                                    <tr style="display:none">
+                                        <td colspan="2">
+                                            <div style="float: right; padding-right:15px;">
+                                                <input type="button" name="Add Terms" value="Add Terms" ng-click="addGrid()" ng-show="selectedObject[0].CompanyCode > 0 && selectedObject[0].BranchCode >0 && selectedObject[0].SessionCode >0 && selectedObject[0].ClassCode > 0 " />
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr style="display:none">
+                                        <td colspan="2">
+                                            <table class="tbl" style="border: solid 1px #808080; width: 98%" cellspacing="1" cellpadding="1">
+                                                <thead>
+                                                <th style="width: 15%; text-align: left;">Sr #</th>
+                                                <th style="width: 30%; text-align: center;">Fee Particular</th>
+                                                <th style="width: 20%; text-align: center;">Rate</th>
+                                                <th style="width: 20%; text-align: left;">Account Code</th>
+                                                <th style="width: 15%; text-align: left;"></th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="session in selectedObject">
+                                                        <td style="text-align: left;">
+                                                            {{ $index +1}}
+                                                        </td>
+                                                        <td>
+                                                            <select id="cboStatus{{$index}}" ng-model="session.FeeParticularCode" ng-options="obj.ParticularCode as obj.ParticularName for obj in listFeeParticular | filter: {CompanyCode: selectedObject[0].CompanyCode}" class="ComboBoxesFlexible" ng-change="validateGrid($index,true)" dosbox="true">
+                                                                <option value=""></option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" maxlength="255" id="txtRate{{$index}}" ng-model="session.Rate" ng-change="validateGrid($index,true)" />
+                                                        </td>
+                                                        <td>
+                                                            @*<input type="text" maxlength="255" ng-model="session.AccountCode" />*@
+                                                            <input type="text" id="txtAccountCode{{$index}}" ng-model="session.AccountCode" autocomplete="off" ng-change="SetSelectedAccountTitle(session,{{$index}})" ng-keydown="handleKeyEvent($event,$index)" />
+                                                            <div style="width: 400px; z-index: 10000; position: fixed;background-color:#ffffff; ">
+                                                                <table class="QuickSearchResults abc{{$index}}" border="1">
+                                                                    <tr style="background-color:#0094ff; font-weight:bold; ">
+                                                                        <td style="text-align:center;">Code</td>
+                                                                        <td style="text-align:center;">Title</td>
+                                                                    </tr>
+                                                                    <tr ng-repeat="x in listCOA | filter:session.AccountTitle | limitTo: 10" ng-click="GetSelectedAccountTitle(session,x,$parent.$index)" style="cursor:pointer">
+                                                                        <td>{{ x.AccountCode }}</td>
+                                                                        <td style="text-align:left;">{{ x.AccountTitle }}</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </td>
+                                                        <td style="text-align: center;">
+                                                            <img src="~/images/delete_entry.gif" ng-click="deleteGridRow(selectedObject,$index)">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </td>
+                        </tr>
+                        <tr class="TableHeader">
+                            <td align="right" style="padding-right:5px;">
+                                @*<a href="/Report/Report?ReportID=103">clieck here</a>*@
+                                <input type="submit" id="btnSumbit" value="Report" ng-click="openreport();" dosbox="true" class="Buttons" />
+                                @*<input type="submit" id="btnDelete" value="Delete" ng-click="delete();" ng-show="false"
+                                       dosbox="true" class="Buttons" />*@
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div ng-show="saveError">
+                                    <div style="color:green">
+                                        {{ saveError }}
+                                    </div>
+                                </div>
+                                <div ng-show="listError">
+                                    <div style="color:red">
+                                        {{ listError }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        
+        
+        //function report() {
+        //    var ccode = document.getElementById('cboCompanyCode');
+        //    var bcode = document.getElementById('cboBranchCode');
+        //    var scode = document.getElementById('cboSessionCode');
+        //    var bcode = document.getElementById('cboBankCode');
+        //    alert("/Report/Report?ReportID=103&CompanyCode=" + ccode.options[ccode.selectedIndex].value + '&BranchCode=' + bcode.options[bcode.selectedIndex].value + '&SessionCode=' + scode.options[scode.selectedIndex].value + '&BankCode=' + bcode.options[bcode.selectedIndex].value + '&ClassCode=' + arrclass.toString() + '&MonthCode=' + arr.toString());
+        //    //window.location = "/Report/Report?ReportID=103&CompanyCode=" + ccode + '&BranchCode=' + bcode + '&SessionCode=' + scode + '&BankCode=' + bcode + '&ClassCode=' + arrclass.toString() + '&MonthCode=' + arr.toString();
+        //}
+        function hideQuickSearchResults() {
+            setTimeout(function () { $('.QuickSearchResults').hide(); }, 200);
+        }
+        $('.QuickSearchResults').hide();
+        $(document).on('keydown', ':focusable', function (e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                // Get all focusable elements on the page
+                var $canfocus = $(':focusable');
+
+                var index = $canfocus.index(this) + 1;
+                if (index >= $canfocus.length) index = 0;
+
+                $canfocus.eq(index).focus().select();
+            }
+        });
+    </script>
+</form>
+
